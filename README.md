@@ -45,3 +45,28 @@ npm i -S normalize.css
 > flex-basis 属性定义了在分配多余空间之前，项目占据的主轴空间（main size），设置元素的初始长度
 
 * [https://www.iconfont.cn/](https://www.iconfont.cn/)
+* scss &
+
+```scss
+// scss
+  .position {
+    // ...
+    &__icon {
+      // ...
+    }
+    .position__notice {
+      // ...
+    }
+  }
+
+// scss 编译后生成的 css
+.position {
+  // ...
+}
+.position__icon {
+  // ...
+}
+.position .position__notice {
+  // ...
+}
+```
