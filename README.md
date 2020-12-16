@@ -45,7 +45,7 @@ npm i -S normalize.css
 > flex-basis 属性定义了在分配多余空间之前，项目占据的主轴空间（main size），设置元素的初始长度
 
 * [https://www.iconfont.cn/](https://www.iconfont.cn/)
-* scss &
+* scss 中 `&` 符号的作用
 
 ```scss
 // scss
@@ -68,5 +68,19 @@ npm i -S normalize.css
 }
 .position .position__notice {
   // ...
+}
+```
+
+* css hack 避免图片下面内容的抖动
+
+```scss
+.banner {
+  height: 0;
+  overflow: hidden;
+  // padding 的值为百分数时，是相对于容器的宽度 width 来计算的
+  padding-bottom: 25.4%; // 这里 25.4% 是通过容器的 height/width 计算得到的
+  &__img {
+    width: 100%;
+  }
 }
 ```

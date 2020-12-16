@@ -5,7 +5,19 @@
         北京理工大学国防科技园2号楼10层北京理工大学国防科技园2号楼10层
       <span class="iconfont position__notice">&#xe654;</span>
     </div>
+    <div class="search">
+      <span class="iconfont">&#xe65d;</span>
+      <span class="search__text">山姆会员商店优惠商品</span>
+    </div>
+    <div class="banner">
+      <img
+        src="https://tva1.sinaimg.cn/large/0081Kckwly1glpwqfmx85j316g0as0vg.jpg"
+        alt="banner"
+        class="banner__img"
+      >
+    </div>
   </div>
+
   <div class="docker">
     <div class="docker__item docker__item--active">
       <span class="iconfont">&#xe602;</span>
@@ -55,6 +67,28 @@
       font-size: .2rem;
     }
   }
+  .search {
+    display: flex;
+    align-items: center;
+    height: .32rem;
+    margin: 0 0 .12rem;
+    border-radius: .16rem;
+    background: #F5F5F5;
+    color: #B7B7B7;
+    font-size: .14rem;
+    .iconfont {
+      font-size: .2rem;
+      padding: 0 .12rem 0 .16rem;
+    }
+  }
+  .banner {
+    height: 0;
+    overflow: hidden;
+    padding-bottom: 25%;
+    &__img {
+      width: 100%;
+    }
+  }
 }
 
 .docker {
@@ -64,7 +98,7 @@
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: .49rem;
+  height: .5rem;
   border-top: 1px solid #F1F1F1;
   padding: $wrapper-padding;
   color: $content-fontcolor;
