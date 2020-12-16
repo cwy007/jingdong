@@ -14,7 +14,7 @@
 
 <script>
 export default {
-  name: 'Docker',
+  // name: 'Docker',
   setup () {
     const dockerList = [
       { icon: '&#xe602;', text: '首页' },
@@ -29,7 +29,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/stylesheets/variables.scss';
 .docker {
   display: flex;

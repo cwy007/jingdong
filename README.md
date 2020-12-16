@@ -84,3 +84,5 @@ npm i -S normalize.css
   }
 }
 ```
+
+* 组件的 [name](https://cn.vuejs.org/v2/api/#name) 属性会显示在 Vue.js devtools 这个浏览器插件中，方便调试
