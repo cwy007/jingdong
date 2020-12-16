@@ -16,85 +16,17 @@
     >
   </div>
   <div class="icons">
-    <div class="icons__item">
+    <div
+      class="icons__item"
+      v-for="item in iconsList"
+      :key="item.imgName"
+    >
       <img
-        src="https://tva1.sinaimg.cn/large/0081Kckwly1glpy11sqklj303c03cwel.jpg"
+        :src="`https://tva1.sinaimg.cn/large/${item.imgName}`"
         alt="icons__item__img"
         class="icons__item__img"
       >
-      <span class="icons__item__desc">超市便利</span>
-    </div>
-    <div class="icons__item">
-      <img
-        src="https://tva1.sinaimg.cn/large/0081Kckwly1glpyls5pb7j303c03cwek.jpg"
-        alt="icons__item__img"
-        class="icons__item__img"
-      >
-      <span class="icons__item__desc">菜市场</span>
-    </div>
-    <div class="icons__item">
-      <img
-        src="https://tva1.sinaimg.cn/large/0081Kckwly1glpymid76nj303c03cmxc.jpg"
-        alt="icons__item__img"
-        class="icons__item__img"
-      >
-      <span class="icons__item__desc">水果店</span>
-    </div>
-    <div class="icons__item">
-      <img
-        src="https://tva1.sinaimg.cn/large/0081Kckwly1glpyna4o7ij303c03c0sw.jpg"
-        alt="icons__item__img"
-        class="icons__item__img"
-      >
-      <span class="icons__item__desc">鲜花绿植</span>
-    </div>
-    <div class="icons__item">
-      <img
-        src="https://tva1.sinaimg.cn/large/0081Kckwly1glpyntcurdj303c03c0sv.jpg"
-        alt="icons__item__img"
-        class="icons__item__img"
-      >
-      <span class="icons__item__desc">医药健康</span>
-    </div>
-    <div class="icons__item">
-      <img
-        src="https://tva1.sinaimg.cn/large/0081Kckwly1glpyo92vrnj303c03c74d.jpg"
-        alt="icons__item__img"
-        class="icons__item__img"
-      >
-      <span class="icons__item__desc">家居时尚</span>
-    </div>
-    <div class="icons__item">
-      <img
-        src="https://tva1.sinaimg.cn/large/0081Kckwly1glpyooqv8lj303c03caa8.jpg"
-        alt="icons__item__img"
-        class="icons__item__img"
-      >
-      <span class="icons__item__desc">烘培蛋糕</span>
-    </div>
-    <div class="icons__item">
-      <img
-        src="https://tva1.sinaimg.cn/large/0081Kckwly1glpyp1vv7fj303c03cjrc.jpg"
-        alt="icons__item__img"
-        class="icons__item__img"
-      >
-      <span class="icons__item__desc">签到</span>
-    </div>
-    <div class="icons__item">
-      <img
-        src="https://tva1.sinaimg.cn/large/0081Kckwly1glpypg5n2xj303c03c74g.jpg"
-        alt="icons__item__img"
-        class="icons__item__img"
-      >
-      <span class="icons__item__desc">大牌免运</span>
-    </div>
-    <div class="icons__item">
-      <img
-        src="https://tva1.sinaimg.cn/large/0081Kckwly1glpypxr2fwj303c03cdfv.jpg"
-        alt="icons__item__img"
-        class="icons__item__img"
-      >
-      <span class="icons__item__desc">红包套餐</span>
+      <span class="icons__item__desc">{{item.desc}}</span>
     </div>
   </div>
   <div class="gap"></div>
@@ -102,7 +34,24 @@
 
 <script>
 export default {
-  name: 'StaticPart'
+  name: 'StaticPart',
+  setup () {
+    const iconsList = [
+      { imgName: '0081Kckwly1glpyls5pb7j303c03cwek.jpg', desc: '超市便利' },
+      { imgName: '0081Kckwly1glpyls5pb7j303c03cwek.jpg', desc: '菜市场' },
+      { imgName: '0081Kckwly1glpymid76nj303c03cmxc.jpg', desc: '水果店' },
+      { imgName: '0081Kckwly1glpyna4o7ij303c03c0sw.jpg', desc: '鲜花绿植' },
+      { imgName: '0081Kckwly1glpyntcurdj303c03c0sv.jpg', desc: '医药健康' },
+      { imgName: '0081Kckwly1glpyo92vrnj303c03c74d.jpg', desc: '家居时尚' },
+      { imgName: '0081Kckwly1glpyooqv8lj303c03caa8.jpg', desc: '烘培蛋糕' },
+      { imgName: '0081Kckwly1glpyp1vv7fj303c03cjrc.jpg', desc: '签到' },
+      { imgName: '0081Kckwly1glpypg5n2xj303c03c74g.jpg', desc: '大牌免运' },
+      { imgName: '0081Kckwly1glpypxr2fwj303c03cdfv.jpg', desc: '红包套餐' }
+    ]
+    return {
+      iconsList
+    }
+  }
 }
 </script>
 
