@@ -98,3 +98,5 @@ npm i -S normalize.css
     }));
   }, 3000)
   ```
+
+* [www.fastmock.site](https://www.fastmock.site/#/projects/6581)

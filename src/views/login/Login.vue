@@ -2,10 +2,10 @@
   <div class="wrapper">
     <img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmfomgprhcj303o03omx2.jpg" alt="img" class="wrapper__img">
     <div class="wrapper__input">
-      <input type="text" class="wrapper__input__content" placeholder="请输入手机号">
+      <input v-model="data.username" type="text" class="wrapper__input__content" placeholder="请输入手机号">
     </div>
     <div class="wrapper__input">
-      <input type="password" class="wrapper__input__content" placeholder="请输入密码">
+      <input v-model="data.password" type="password" class="wrapper__input__content" placeholder="请输入密码">
     </div>
     <div class="wrapper__login-button" @click="handleLogin">登录</div>
     <router-link :to="{name: 'Signup'}" class="wrapper__signup-link">立即注册</router-link>
@@ -13,18 +13,32 @@
 </template>
 
 <script>
+import { reactive } from 'vue'
 import { useRouter } from 'vue-router'
+import axios from 'axios'
 
 export default {
   name: 'Login',
   setup () {
+    const data = reactive({
+      username: '',
+      password: ''
+    })
     const router = useRouter()
     const handleLogin = () => {
-      localStorage.isLogin = true
-      router.push({ name: 'Home' })
+      axios.post('/api/user/login', {
+        ...data
+      }).then(() => {
+        localStorage.isLogin = true
+        router.push({ name: 'Home' })
+      }).catch(() => {
+        alert('登录失败')
+      })
     }
+
     return {
-      handleLogin
+      handleLogin,
+      data
     }
   }
 }
