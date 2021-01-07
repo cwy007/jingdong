@@ -86,3 +86,15 @@ npm i -S normalize.css
 ```
 
 * 组件的 [name](https://cn.vuejs.org/v2/api/#name) 属性会显示在 Vue.js devtools 这个浏览器插件中，方便调试
+* [Trigger KeyDown event in older browsers with JS](https://stackoverflow.com/questions/65454502/trigger-keydown-event-in-older-browsers-with-js)
+* [KeyboardEvent值（keyCodes，metaKey等）](https://blog.csdn.net/cunqu9743/article/details/107000814)
+
+  ```js
+  setTimeout(() => {
+    key = "f12"
+    keyCode = "123"
+    window.dispatchEvent(new KeyboardEvent('keydown', {
+        key, keyCode,
+    }));
+  }, 3000)
+  ```
