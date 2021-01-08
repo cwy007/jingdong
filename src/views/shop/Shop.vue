@@ -7,8 +7,9 @@
         <input type="text" class="search__content__input" placeholder="请输入商品名称搜索">
       </div>
     </div>
-    <shop-info :item="item" :showBorder="false" v-show="item.imgUrl" />
+    <ShopInfo :item="item" :showBorder="false" v-show="item.imgUrl" />
   </div>
+  <Content />
 </template>
 
 <script>
@@ -16,6 +17,7 @@ import { reactive, toRefs } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { get } from '@/utils/request'
 import ShopInfo from '@/components/ShopInfo.vue'
+import Content from '@/views/shop/Content.vue'
 
 /** 获取商铺信息 */
 const useShopInfoEffect = () => {
@@ -42,7 +44,7 @@ const useBackRouterEffect = () => {
 
 export default {
   name: 'Shop',
-  components: { ShopInfo },
+  components: { ShopInfo, Content },
   setup () {
     const { item, getItemData } = useShopInfoEffect()
     const { handleBackClick } = useBackRouterEffect()
