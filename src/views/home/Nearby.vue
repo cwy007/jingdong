@@ -4,58 +4,45 @@
     <div
       class="nearby__item"
       v-for="item in nearbyList"
-      :key="item.id"
+      :key="item._id"
     >
       <img :src="item.imgUrl" alt="nearby__item__img" class="nearby__item__img">
       <div class="nearby__item__content">
-        <div class="nearby__content__title">{{item.title}}</div>
+        <div class="nearby__content__title">{{item.name}}</div>
         <div class="nearby__content__tags">
-          <span
-            class="nearby__content__tag"
-            v-for="(innerItem, innerIndex) in item.tags"
-            :key="innerIndex"
-          >
-            {{innerItem}}
-          </span>
+          <span class="nearby__content__tag">月售{{item.sales}}</span>
+          <span class="nearby__content__tag">起送￥{{item.expressLimit}}</span>
+          <span class="nearby__content__tag">基础运费￥{{item.expressPrice}}</span>
         </div>
-        <p class="nearby__content__highlight">{{item.desc}}</p>
+        <p class="nearby__content__highlight">{{item.slogan}}</p>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { ref } from 'vue'
+import { get } from '@/utils/request'
+
+const useNearbyListEffect = () => {
+  const nearbyList = ref([])
+  const getNearbyList = async () => {
+    const result = await get('/api/shop/hot-list')
+    if (result?.errno === 0 && result?.data?.length) {
+      nearbyList.value = result.data
+    }
+  }
+
+  return { nearbyList, getNearbyList }
+}
+
 export default {
   name: 'Nearby',
   setup () {
-    const nearbyList = [{
-      id: 1,
-      imgUrl: 'https://tva1.sinaimg.cn/large/0081Kckwly1glq7v8idnxj309a09a40n.jpg',
-      title: '沃尔玛',
-      tags: ['月售1万+', '起送¥0', '基础运费¥5'],
-      desc: 'VIP尊享满89元减4元运费券（每月3张）'
-    }, {
-      id: 2,
-      imgUrl: 'https://tva1.sinaimg.cn/large/0081Kckwly1glq7v8idnxj309a09a40n.jpg',
-      title: '山姆会员商店',
-      tags: ['月售2千+', '起送¥5', '基础运费¥5'],
-      desc: '联合利华洗护满10减5'
-    }, {
-      id: 1,
-      imgUrl: 'https://tva1.sinaimg.cn/large/0081Kckwly1glq7v8idnxj309a09a40n.jpg',
-      title: '沃尔玛',
-      tags: ['月售1万+', '起送¥0', '基础运费¥5'],
-      desc: 'VIP尊享满89元减4元运费券（每月3张）'
-    }, {
-      id: 2,
-      imgUrl: 'https://tva1.sinaimg.cn/large/0081Kckwly1glq7v8idnxj309a09a40n.jpg',
-      title: '山姆会员商店',
-      tags: ['月售2千+', '起送¥5', '基础运费¥5'],
-      desc: '联合利华洗护满10减5'
-    }]
-    return {
-      nearbyList
-    }
+    const { nearbyList, getNearbyList } = useNearbyListEffect()
+    getNearbyList()
+
+    return { nearbyList }
   }
 }
 </script>
