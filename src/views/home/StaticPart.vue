@@ -82,8 +82,8 @@ export default {
   height: .32rem;
   margin: 0 0 .12rem;
   border-radius: .16rem;
-  background: #F5F5F5;
-  color: #B7B7B7;
+  background: $search-bgColor;
+  color: $search-fontColor;
   font-size: .14rem;
   .iconfont {
     font-size: .2rem;
