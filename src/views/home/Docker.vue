@@ -41,7 +41,7 @@ export default {
   height: .5rem;
   border-top: 1px solid $content-bgColor;
   padding: $wrapper-padding;
-  color: $content-fontcolor;
+  color: $content-fontColor;
   &__item {
     display: flex;
     flex-flow: column;

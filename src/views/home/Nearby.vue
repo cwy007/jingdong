@@ -51,7 +51,7 @@ export default {
   }
   a {
     text-decoration: none;
-    color: $content-fontcolor;
+    color: $content-fontColor;
   }
 }
 </style>

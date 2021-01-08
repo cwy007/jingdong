@@ -127,7 +127,7 @@ export default {
     background: #0091FF;
     box-shadow: 0 .04rem .08rem 0 rgba(0, 145, 255, .32);
     border-radius: .04rem;
-    color: #fff;
+    color: $bgColor;
     font-size: .16rem;
     text-align: center;
   }

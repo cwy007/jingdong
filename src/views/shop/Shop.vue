@@ -91,9 +91,9 @@ export default {
       outline: none;
       background: none;
       font-size: .14rem;
-      color: $content-fontcolor;
+      color: $content-fontColor;
       &::placeholder {
-        color: $content-fontcolor;
+        color: $content-fontColor;
       }
     }
   }

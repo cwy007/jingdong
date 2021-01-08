@@ -4,9 +4,6 @@
 
 <script>
 import { reactive, toRefs } from 'vue'
-export default {
-  props: ['message']
-}
 
 export const useToastEffect = () => {
   const toastData = reactive({
@@ -24,9 +21,15 @@ export const useToastEffect = () => {
 
   return { ...toRefs(toastData), showToast }
 }
+
+export default {
+  props: ['message']
+}
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/stylesheets/variables.scss';
+
 .toast {
   position: fixed;
   left: 50%;
@@ -35,6 +38,6 @@ export const useToastEffect = () => {
   padding: .1rem;
   background: rgba(0, 0, 0, .35);
   border-radius: .05rem;
-  color: #FFF;
+  color: $bgColor;
 }
 </style>

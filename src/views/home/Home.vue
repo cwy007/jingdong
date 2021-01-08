@@ -28,7 +28,7 @@ export default {
   right: 0;
   bottom: .5rem;
   left: 0;
-  color: $content-fontcolor;
+  color: $content-fontColor;
   overflow-y: auto;
   padding: 0 .18rem .1rem .18rem;
 }
