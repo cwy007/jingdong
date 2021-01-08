@@ -2,22 +2,88 @@
   <div class="wrapper">
     <img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmfomgprhcj303o03omx2.jpg" alt="img" class="wrapper__img">
     <div class="wrapper__input">
-      <input type="text" class="wrapper__input__content" placeholder="请输入手机号">
+      <input
+        v-model="username"
+        type="text"
+        class="wrapper__input__content"
+        placeholder="请输入用户名"
+      >
     </div>
     <div class="wrapper__input">
-      <input type="password" class="wrapper__input__content" placeholder="请输入密码">
+      <input
+        v-model="password"
+        type="password"
+        class="wrapper__input__content"
+        placeholder="请输入密码"
+        autocomplete="new-password"
+      >
     </div>
     <div class="wrapper__input">
-      <input type="password" class="wrapper__input__content" placeholder="确认密码">
+      <input
+        v-model="passwordConfirm"
+        type="password"
+        class="wrapper__input__content"
+        placeholder="确认密码"
+        autocomplete="new-password"
+      >
     </div>
-    <div class="wrapper__signup-button">注册</div>
+    <div class="wrapper__signup-button" @click="handleSignup">注册</div>
     <router-link :to="{name: 'Login'}" class="wrapper__login-link">已有账号去登陆</router-link>
+    <Toast v-if="show" :message="message"/>
   </div>
 </template>
 
 <script>
+import { reactive, toRefs } from 'vue'
+import { useRouter } from 'vue-router'
+import { post } from '@/utils/request'
+import Toast, { useToastEffect } from '@/components/Toast'
+
+const useSignupEffect = (showToast) => {
+  const router = useRouter()
+  const data = reactive({ username: '', password: '', passwordConfirm: '' })
+  const handleSignup = async () => {
+    try {
+      if (data.password !== data.passwordConfirm) {
+        showToast('确认密码和密码不同')
+        return
+      }
+      const result = await post('/api/user/register', {
+        username: data.username,
+        password: data.password
+      })
+      if (result?.errno === 0) {
+        router.push({ name: 'Login' })
+      } else {
+        showToast('注册失败')
+      }
+    } catch (e) {
+      showToast('请求失败')
+    }
+  }
+
+  return {
+    ...toRefs(data),
+    handleSignup
+  }
+}
+
 export default {
-  name: 'Signup'
+  name: 'Signup',
+  components: { Toast },
+  setup () {
+    const { show, message, showToast } = useToastEffect()
+    const { username, password, passwordConfirm, handleSignup } = useSignupEffect(showToast)
+
+    return {
+      show,
+      message,
+      username,
+      password,
+      passwordConfirm,
+      handleSignup
+    }
+  }
 }
 </script>
 

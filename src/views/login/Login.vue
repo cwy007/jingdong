@@ -2,10 +2,21 @@
   <div class="wrapper">
     <img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmfomgprhcj303o03omx2.jpg" alt="img" class="wrapper__img">
     <div class="wrapper__input">
-      <input v-model="username" type="text" class="wrapper__input__content" placeholder="请输入手机号">
+      <input
+        v-model="username"
+        type="text"
+        class="wrapper__input__content"
+        placeholder="请输入用户名"
+      >
     </div>
     <div class="wrapper__input">
-      <input v-model="password" type="password" class="wrapper__input__content" placeholder="请输入密码">
+      <input
+        v-model="password"
+        type="password"
+        class="wrapper__input__content"
+        placeholder="请输入密码"
+        autocomplete="new-password"
+      >
     </div>
     <div class="wrapper__login-button" @click="handleLogin">登录</div>
     <router-link :to="{name: 'Signup'}" class="wrapper__signup-link">立即注册</router-link>
@@ -26,6 +37,11 @@ const useLoginEffect = (showToast) => {
 
   const handleLogin = async () => {
     try {
+      const { username, password } = data
+      if (username === '' || password === '') {
+        showToast('用户名或密码不能为空')
+        return
+      }
       const result = await post('/api/user/login', data)
       if (result?.errno === 0) {
         localStorage.isLogin = true

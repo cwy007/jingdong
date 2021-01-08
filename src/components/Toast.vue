@@ -13,7 +13,6 @@ export const useToastEffect = () => {
     show: false,
     message: ''
   })
-  const { show, message } = toRefs(toastData)
   const showToast = (message) => {
     toastData.show = true
     toastData.message = message
@@ -23,7 +22,7 @@ export const useToastEffect = () => {
     }, 2000)
   }
 
-  return { show, message, showToast }
+  return { ...toRefs(toastData), showToast }
 }
 </script>
 
