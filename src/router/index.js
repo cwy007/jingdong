@@ -1,11 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import axios from 'axios'
 import Home from '@/views/home/Home'
 import Signup from '@/views/signup/Signup'
 import Login from '@/views/login/Login'
-
-axios.defaults.baseURL = 'https://www.fastmock.site/mock/ae8e9031947a302fed5f92425995aa19/jd'
-axios.defaults.headers.post['Content-Type'] = 'application/json'
 
 const routes = [
   {
