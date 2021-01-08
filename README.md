@@ -100,3 +100,15 @@ npm i -S normalize.css
   ```
 
 * [www.fastmock.site](https://www.fastmock.site/#/projects/6581)
+* async route
+
+  ```js
+  // {
+  //   path: '/about',
+  //   name: 'About',
+  //   // route level code-splitting
+  //   // this generates a separate chunk (about.[hash].js) for this route
+  //   // which is lazy-loaded when the route is visited.
+  //   component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+  // }
+  ```

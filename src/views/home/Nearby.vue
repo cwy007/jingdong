@@ -1,28 +1,18 @@
 <template>
   <div class="nearby">
     <h3 class="nearby__title">附近店铺</h3>
-    <div
-      class="nearby__item"
+    <shop-info
       v-for="item in nearbyList"
       :key="item._id"
-    >
-      <img :src="item.imgUrl" alt="nearby__item__img" class="nearby__item__img">
-      <div class="nearby__item__content">
-        <div class="nearby__content__title">{{item.name}}</div>
-        <div class="nearby__content__tags">
-          <span class="nearby__content__tag">月售{{item.sales}}</span>
-          <span class="nearby__content__tag">起送￥{{item.expressLimit}}</span>
-          <span class="nearby__content__tag">基础运费￥{{item.expressPrice}}</span>
-        </div>
-        <p class="nearby__content__highlight">{{item.slogan}}</p>
-      </div>
-    </div>
+      :item="item"
+    />
   </div>
 </template>
 
 <script>
 import { ref } from 'vue'
 import { get } from '@/utils/request'
+import ShopInfo from '@/components/ShopInfo.vue'
 
 const useNearbyListEffect = () => {
   const nearbyList = ref([])
@@ -37,6 +27,7 @@ const useNearbyListEffect = () => {
 }
 
 export default {
+  components: { ShopInfo },
   name: 'Nearby',
   setup () {
     const { nearbyList, getNearbyList } = useNearbyListEffect()
@@ -48,43 +39,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/stylesheets/variables.scss';
 .nearby {
   &__title {
     margin: .16rem 0 .02rem 0;
     font-size: .18rem;
     font-weight: normal;
-  }
-  &__item {
-    display: flex;
-    padding-top: .12rem;
-    &__img {
-      width: .56rem;
-      height: .56rem;
-      margin-right: .16rem;
-    }
-    &__content {
-      padding-bottom: .12rem;
-      border-bottom: .01rem solid $content-bgColor;
-      .nearby__content__title {
-        line-height: .22rem;
-        font-size: .16rem;
-      }
-      .nearby__content__tags {
-        margin-top: .08rem;
-        line-height: .18rem;
-        font-size: .13rem;
-        .nearby__content__tag {
-          margin-right: .16rem;
-        }
-      }
-      .nearby__content__highlight {
-        margin: .08rem 0 0 0;
-        line-height: .18rem;
-        font-size: .13rem;
-        color: #E93B3B;
-      }
-    }
   }
 }
 </style>
