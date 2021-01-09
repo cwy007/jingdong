@@ -16,7 +16,7 @@
               class="product__number__minus"
               @click="changeCartItemInfo(shopId, item._id, item, -1)"
             >-</span>
-            {{cartList?.[`${shopId}`]?.[item._id]?.count || 0}}
+            {{item.count || 0}}
             <span
               class="product__number__plus"
               @click="changeCartItemInfo(shopId, item._id, item, 1)"
@@ -47,6 +47,8 @@ import { useCommonCartEffect } from './commonCartEffect'
 const useCartEffect = (shopId) => {
   const store = useStore()
   const { cartList } = store.state
+  const { changeCartItemInfo } = useCommonCartEffect()
+
   const total = computed(() => {
     const productList = cartList[shopId]
     let count = 0
@@ -73,7 +75,7 @@ const useCartEffect = (shopId) => {
     return cartList[shopId] || []
   })
 
-  return { total, price, productList }
+  return { total, price, productList, changeCartItemInfo }
 }
 
 export default {
@@ -81,15 +83,13 @@ export default {
   setup () {
     const route = useRoute()
     const shopId = route.params.id
-    const { total, price, productList } = useCartEffect(shopId)
-    const { cartList, changeCartItemInfo } = useCommonCartEffect()
+    const { total, price, productList, changeCartItemInfo } = useCartEffect(shopId)
 
     return {
       shopId,
       total,
       price,
       productList,
-      cartList,
       changeCartItemInfo
     }
   }
