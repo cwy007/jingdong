@@ -23,10 +23,11 @@
         </div>
         <div class="product__number">
           <span
+            v-show="item.count && item.count > 0"
             class="product__number__minus iconfont"
             @click="changeCartItemInfo(shopId, item._id, item, -1)"
           >&#xe65b;</span>
-          {{item.count || 0}}
+          <span v-show="item.count && item.count > 0">{{item.count}}</span>
           <span
             class="product__number__plus iconfont"
             @click="changeCartItemInfo(shopId, item._id, item, 1)"

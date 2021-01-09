@@ -21,7 +21,7 @@
               class="product__number__minus iconfont"
               @click="changeCartItemInfo(shopId, item._id, item, -1)"
             >&#xe65b;</span>
-            {{item.count || 0}}
+            <span>{{item.count || 0}}</span>
             <span
               class="product__number__plus iconfont"
               @click="changeCartItemInfo(shopId, item._id, item, 1)"
