@@ -1,22 +1,24 @@
 <template>
   <div class="content">
     <div class="category">
-      <div class="category__item category__item--active">全部商品</div>
-      <div class="category__item">秒杀</div>
-      <div class="category__item">新鲜水果</div>
-      <div class="category__item">休闲食品</div>
-      <div class="category__item">时令蔬菜</div>
-      <div class="category__item">肉蛋家禽</div>
+      <div
+        v-for="item in categories"
+        :key="item.tab"
+        :class="['category__item', {'category__item--active': currentTab === item.tab}]"
+        @click="handleCategoryClick(item.tab)"
+      >
+        {{item.name}}
+      </div>
     </div>
     <div class="product">
-      <div class="product__item">
-        <img class="product__item__img" src="https://tva1.sinaimg.cn/large/008eGmZEly1gmgvun6zmsj304a048gmt.jpg" alt="tomato">
+      <div class="product__item" v-for="item in contentList" :key="item._id">
+        <img class="product__item__img" :src="item.imgUrl" alt="tomato">
         <div class="product__item__detail">
-          <h4 class="product__item__title">番茄250g/份</h4>
-          <p class="product__item__sales">月售10件</p>
+          <h4 class="product__item__title">{{item.name}}</h4>
+          <p class="product__item__sales">月售 {{item.sales}} 件</p>
           <p class="product__item__price">
-            <span class="product__item__yen">&yen;</span>33.6
-            <span class="product__item__origin">&yen;66.6</span>
+            <span class="product__item__yen">&yen;</span>{{item.price}}
+            <span class="product__item__origin">&yen;{{item.oldPrice}}</span>
           </p>
         </div>
         <div class="product__number">
@@ -25,40 +27,53 @@
           <span class="product__number__plus">+</span>
         </div>
       </div>
-      <div class="product__item">
-        <img class="product__item__img" src="https://tva1.sinaimg.cn/large/008eGmZEly1gmgvun6zmsj304a048gmt.jpg" alt="tomato">
-        <div class="product__item__detail">
-          <h4 class="product__item__title">番茄250g/份</h4>
-          <p class="product__item__sales">月售10件</p>
-          <p class="product__item__price">
-            <span class="product__item__yen">&yen;</span>33.6
-            <span class="product__item__origin">&yen;66.6</span>
-          </p>
-        </div>
-      </div>
-      <div class="product__item">
-        <img class="product__item__img" src="https://tva1.sinaimg.cn/large/008eGmZEly1gmgvun6zmsj304a048gmt.jpg" alt="tomato">
-        <div class="product__item__detail">
-          <h4 class="product__item__title">番茄250g/份</h4>
-          <p class="product__item__sales">月售10件</p>
-          <p class="product__item__price">
-            <span class="product__item__yen">&yen;</span>33.6
-            <span class="product__item__origin">&yen;66.6</span>
-          </p>
-        </div>
-      </div>
     </div>
   </div>
 </template>
 
 <script>
+import { reactive, toRefs } from 'vue'
+import { useRoute } from 'vue-router'
+import { get } from '@/utils/request'
+
 export default {
-  name: 'Content'
+  name: 'Content',
+  setup () {
+    const route = useRoute()
+    const categories = [
+      { name: '全部商品', tab: 'all' },
+      { name: '秒杀', tab: 'seckill' },
+      { name: '新鲜水果', tab: 'fruit' }
+    ]
+    const data = reactive({
+      currentTab: categories[0].tab,
+      contentList: []
+    })
+    const getContentData = async (tab) => {
+      const result = await get(`/api/shop/${route.params.id}/products`, { tab })
+      if (result?.errno === 0 && result?.data?.length) {
+        data.contentList = result.data
+      }
+    }
+    getContentData('all')
+    const handleCategoryClick = (tab) => {
+      getContentData(tab)
+      data.currentTab = tab
+    }
+    const { currentTab, contentList } = toRefs(data)
+    return {
+      categories,
+      currentTab,
+      contentList,
+      handleCategoryClick
+    }
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 @import '@/assets/stylesheets/variables.scss';
+@import '@/assets/stylesheets/mixins.scss';
 
 .content {
   display: flex;
@@ -97,12 +112,16 @@ export default {
       height: .68rem;
       margin-right: .16rem;
     }
+    &__detail {
+      overflow: hidden;
+    }
     &__title {
       margin: 0;
       font-weight: bold;
       line-height: .2rem;
       font-size: .14rem;
       color: $content-fontColor;
+      @include ellipsis;
     }
     &__sales {
       margin: .06rem 0;

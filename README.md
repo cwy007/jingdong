@@ -22,6 +22,17 @@ npm run lint
 npm i -S normalize.css
 ```
 
+## js code snippet
+
+```js
+➜  code-for-project git:(cwy-branch) ✗ node
+Welcome to Node.js v12.16.2.
+// Returns a string consisting of the elements of the object repeated count times.
+> 'js'.repeat(5)
+'jsjsjsjsjs'
+
+```
+
 ## 参考
 
 * [Flex 布局教程：语法篇](https://www.ruanyifeng.com/blog/2015/07/flex-grammar.html)
