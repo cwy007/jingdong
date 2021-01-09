@@ -1,8 +1,13 @@
 <template>
   <div class="cart">
     <div class="product">
-      <template v-for="item in productList" :key="item._id">
-        <div class="product__item" v-if="item.count > 0">
+      <template v-for="item in productList">
+        <div class="product__item" v-if="item.count > 0" :key="item._id">
+          <div
+            :class="['iconfont', item.checked? 'product__item__checked' : 'product__item__unchecked']"
+            v-html="item.checked ? '&#xe620;' : '&#xe601;'"
+            @click="changeCartItemChecked(shopId, item._id)"
+          />
           <img class="product__item__img" :src="item.imgUrl" alt="tomato">
           <div class="product__item__detail">
             <h4 class="product__item__title">{{item.name}}</h4>
@@ -13,14 +18,14 @@
           </div>
           <div class="product__number">
             <span
-              class="product__number__minus"
+              class="product__number__minus iconfont"
               @click="changeCartItemInfo(shopId, item._id, item, -1)"
-            >-</span>
+            >&#xe65b;</span>
             {{item.count || 0}}
             <span
-              class="product__number__plus"
+              class="product__number__plus iconfont"
               @click="changeCartItemInfo(shopId, item._id, item, 1)"
-            >+</span>
+            >&#xe624;</span>
           </div>
         </div>
       </template>
@@ -65,7 +70,9 @@ const useCartEffect = (shopId) => {
     let count = 0
     if (productList) {
       for (const i in productList) {
-        count += (productList[i].count * productList[i].price)
+        if (productList[i].checked) {
+          count += (productList[i].count * productList[i].price)
+        }
       }
     }
     return count.toFixed(2)
@@ -75,7 +82,11 @@ const useCartEffect = (shopId) => {
     return cartList[shopId] || []
   })
 
-  return { total, price, productList, changeCartItemInfo }
+  const changeCartItemChecked = (shopId, productId) => {
+    store.commit('changeCartItemChecked', { shopId, productId })
+  }
+
+  return { total, price, productList, changeCartItemInfo, changeCartItemChecked }
 }
 
 export default {
@@ -83,14 +94,10 @@ export default {
   setup () {
     const route = useRoute()
     const shopId = route.params.id
-    const { total, price, productList, changeCartItemInfo } = useCartEffect(shopId)
 
     return {
       shopId,
-      total,
-      price,
-      productList,
-      changeCartItemInfo
+      ...useCartEffect(shopId)
     }
   }
 }
@@ -116,6 +123,15 @@ export default {
     padding: .12rem 0;
     margin: 0 .16rem;
     border-bottom: .01rem solid $content-bgColor;
+    &__checked, &__unchecked {
+      line-height: .5rem;
+      margin-right: .2rem;
+      color: #0091FF;
+      font-size: .2rem;
+    }
+    &__unchecked {
+      color: #666;
+    }
     &__img {
       width: .46rem;
       height: .46rem;
@@ -158,25 +174,19 @@ export default {
       right: 0;
       bottom: .12rem;
       font-size: .14rem;
+      display: flex;
+      align-items: center;
       &__minus, &__plus {
         display: inline-block;
-        width: .2rem;
-        height: .2rem;
-        line-height: .18rem;
-        border-radius: 50%;
         font-size: .2rem;
-        text-align: center;
       }
       &__minus {
-        border: .01rem solid $medium-fontColor;
+        margin-right: .1rem;
         color: $medium-fontColor;
-        margin-right: .05rem;
       }
       &__plus {
-        border: .01rem solid $btn-bgColor;
-        background: $btn-bgColor;
-        color: $bgColor;
-        margin-left: .05rem;
+        margin-left: .1rem;
+        color: $btn-bgColor;
       }
     }
   }
