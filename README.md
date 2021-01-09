@@ -123,3 +123,5 @@ Welcome to Node.js v12.16.2.
   //   component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   // }
   ```
+
+* [watchEffect 它立即执行传入的一个函数，同时响应式追踪其依赖，并在其依赖变更时重新运行该函数](https://v3.cn.vuejs.org/guide/reactivity-computed-watchers.html#watcheffect)
