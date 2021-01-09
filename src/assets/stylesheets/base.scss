@@ -4,3 +4,11 @@ html {
 body {
   font-size: 12px;
 }
+
+.clearfix::after {
+  content: "";
+  display: block;
+  clear: both;
+  visibility: hidden;
+  height: 0;
+}
