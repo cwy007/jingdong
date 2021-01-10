@@ -23,13 +23,13 @@
         </div>
         <div class="product__number">
           <span
-            v-show="cartList?.[`${shopId}`]?.productList[item._id]?.count"
+            v-show="getProductCartCount(shopId, item._id)"
             class="product__number__minus iconfont"
             v-html="'&#xe65b;'"
             @click="changeCartItem(shopId, item._id, item, -1, shopName)"
           />
-          <span v-show="cartList?.[`${shopId}`]?.productList[item._id]?.count">
-            {{cartList?.[`${shopId}`]?.productList[item._id]?.count}}
+          <span v-show="getProductCartCount(shopId, item._id)">
+            {{getProductCartCount(shopId, item._id)}}
           </span>
           <span
             class="product__number__plus iconfont"
@@ -49,8 +49,16 @@ import { get } from '@/utils/request'
 import { useCommonCartEffect } from './commonCartEffect'
 import { useStore } from 'vuex'
 
-const useCurrentListEffect = (currentTab, shopId) => {
+const useCurrentListEffect = () => {
+  const categories = [
+    { name: '全部商品', tab: 'all' },
+    { name: '秒杀', tab: 'seckill' },
+    { name: '新鲜水果', tab: 'fruit' }
+  ]
+  const currentTab = ref(categories[0].tab)
   const content = reactive({ list: [] })
+  const route = useRoute()
+  const shopId = route.params.id
 
   const getContentData = async () => {
     const result = await get(`/api/shop/${shopId}/products`, { tab: currentTab.value })
@@ -61,36 +69,32 @@ const useCurrentListEffect = (currentTab, shopId) => {
 
   watchEffect(getContentData)
 
-  return toRefs(content)
+  const { list } = toRefs(content)
+
+  return { list, shopId, categories, currentTab }
+}
+
+const useCartEffect = () => {
+  const store = useStore()
+  const { cartList, changeCartItemInfo } = useCommonCartEffect()
+  const changeCartItem = (shopId, productId, productInfo, num, shopName) => {
+    changeCartItemInfo(shopId, productId, productInfo, num)
+    store.commit('changeShopName', { shopId, shopName })
+  }
+  const getProductCartCount = (shopId, productId) => {
+    return cartList?.[shopId]?.productList[productId]?.count || 0
+  }
+
+  return { changeCartItem, getProductCartCount }
 }
 
 export default {
   name: 'Content',
   props: ['shopName'],
   setup () {
-    const categories = [
-      { name: '全部商品', tab: 'all' },
-      { name: '秒杀', tab: 'seckill' },
-      { name: '新鲜水果', tab: 'fruit' }
-    ]
-    const store = useStore()
-    const route = useRoute()
-    const currentTab = ref(categories[0].tab)
-    const shopId = route.params.id
-    const { list } = useCurrentListEffect(currentTab, shopId)
-    const { cartList, changeCartItemInfo } = useCommonCartEffect()
-    const changeCartItem = (shopId, productId, productInfo, num, shopName) => {
-      changeCartItemInfo(shopId, productId, productInfo, num)
-      store.commit('changeShopName', { shopId, shopName })
-    }
-
     return {
-      categories,
-      currentTab,
-      list,
-      cartList,
-      changeCartItem,
-      shopId
+      ...useCurrentListEffect(),
+      ...useCartEffect()
     }
   }
 }
@@ -130,7 +134,7 @@ export default {
     position: relative;
     display: flex;
     padding: .12rem 0;
-    margin: 0 .16rem;
+    margin: 0 .18rem 0 .16rem;
     border-bottom: .01rem solid $content-bgColor;
     &__img {
       width: .68rem;

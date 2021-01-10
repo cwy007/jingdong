@@ -25,11 +25,10 @@ const store = {
       const shopInfo = state.cartList[shopId] || { shopName: '', productList: {} }
       shopInfo.shopName = shopName
       state.cartList[shopId] = shopInfo
-      console.log(shopInfo)
     },
     changeCartItemChecked (state, payload) {
       const { shopId, productId } = payload
-      const product = state.cartList.productList[shopId][productId]
+      const product = state.cartList[shopId].productList[productId]
       product.check = !product.check
     },
     emptyCartProducts (state, payload) {

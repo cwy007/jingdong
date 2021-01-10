@@ -1,5 +1,5 @@
 <template>
-  <div class="mask" v-if="showCart" @click="handleCartShowChange"/>
+  <div class="mask" v-if="showCart" @click="handleCartShowChange(total)"/>
   <div class="cart">
     <div class="product" v-if="showCart">
       <div class="product__header">
@@ -58,7 +58,7 @@
           class="check__icon__img"
           src="https://tva1.sinaimg.cn/large/008eGmZEly1gmhkhuoxkuj302c026gle.jpg"
           alt="bucket"
-          @click="handleCartShowChange"
+          @click="handleCartShowChange(total)"
         >
         <div class="check__icon__tag">{{total}}</div>
       </div>
@@ -82,8 +82,14 @@ const useCartEffect = () => {
   const store = useStore()
   const route = useRoute()
   const shopId = route.params.id
-  const { cartList } = store.state
-  const { changeCartItemInfo } = useCommonCartEffect()
+  const { cartList, changeCartItemInfo } = useCommonCartEffect()
+  const showCart = ref(false)
+
+  const handleCartShowChange = (total) => {
+    if (total !== 0) {
+      showCart.value = !showCart.value
+    }
+  }
 
   const total = computed(() => {
     const { productList } = cartList[shopId] || {}
@@ -93,6 +99,8 @@ const useCartEffect = () => {
         count += productList[i].count
       }
     }
+    if (count === 0) showCart.value = false
+
     return count
   })
 
@@ -110,7 +118,7 @@ const useCartEffect = () => {
   })
 
   const productList = computed(() => {
-    return cartList[shopId].productList || {}
+    return cartList[shopId]?.productList || {}
   })
 
   const allChecked = computed(() => {
@@ -139,24 +147,17 @@ const useCartEffect = () => {
     changeCartItemInfo,
     changeCartItemChecked,
     emptyCartProducts,
-    setCartItemsChecked
+    setCartItemsChecked,
+    handleCartShowChange,
+    showCart
   }
-}
-
-const toggleCartEffect = () => {
-  const showCart = ref(false)
-  const handleCartShowChange = () => {
-    showCart.value = !showCart.value
-  }
-  return { showCart, handleCartShowChange }
 }
 
 export default {
   name: 'Cart',
   setup () {
     return {
-      ...useCartEffect(),
-      ...toggleCartEffect()
+      ...useCartEffect()
     }
   }
 }
@@ -222,7 +223,7 @@ export default {
     position: relative;
     display: flex;
     padding: .12rem 0;
-    margin: 0 .16rem;
+    margin: 0 .18rem;
     border-bottom: .01rem solid $content-bgColor;
     &__check {
       line-height: .5rem;
