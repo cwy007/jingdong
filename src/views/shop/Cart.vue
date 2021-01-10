@@ -1,11 +1,31 @@
 <template>
+  <div class="mask" v-if="showCart"/>
   <div class="cart">
-    <div class="product">
+    <div class="product" v-if="showCart">
+      <div class="product__header">
+        <div class="product__header__all">
+          <span
+            :class="[
+              'product__header__icon', 'iconfont',
+              {'product__header__icon--active': allChecked}
+            ]"
+            v-html="allChecked ? '&#xe620;' : '&#xe601;'"
+            @click="setCartItemsChecked(shopId)"
+          />全选
+        </div>
+        <div
+          class="product__header__clear"
+          @click="emptyCartProducts(shopId)"
+        >清空购物车</div>
+      </div>
       <template v-for="item in productList">
         <div class="product__item" v-if="item.count > 0" :key="item._id">
           <div
-            :class="['iconfont', item.checked? 'product__item__checked' : 'product__item__unchecked']"
-            v-html="item.checked ? '&#xe620;' : '&#xe601;'"
+            :class="[
+              'product__item__check', 'iconfont',
+              {'product__item__check--active': item.check}
+            ]"
+            v-html="item.check ? '&#xe620;' : '&#xe601;'"
             @click="changeCartItemChecked(shopId, item._id)"
           />
           <img class="product__item__img" :src="item.imgUrl" alt="tomato">
@@ -32,7 +52,12 @@
     </div>
     <div class="check">
       <div class="check__icon">
-        <img class="check__icon__img" src="https://tva1.sinaimg.cn/large/008eGmZEly1gmhkhuoxkuj302c026gle.jpg" alt="bucket">
+        <img
+          class="check__icon__img"
+          src="https://tva1.sinaimg.cn/large/008eGmZEly1gmhkhuoxkuj302c026gle.jpg"
+          alt="bucket"
+          @click="handleCartShowChange"
+        >
         <div class="check__icon__tag">{{total}}</div>
       </div>
       <div class="check__info">
@@ -44,7 +69,7 @@
 </template>
 
 <script>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import { useCommonCartEffect } from './commonCartEffect'
@@ -70,7 +95,7 @@ const useCartEffect = (shopId) => {
     let count = 0
     if (productList) {
       for (const i in productList) {
-        if (productList[i].checked) {
+        if (productList[i].check) {
           count += (productList[i].count * productList[i].price)
         }
       }
@@ -79,14 +104,36 @@ const useCartEffect = (shopId) => {
   })
 
   const productList = computed(() => {
-    return cartList[shopId] || []
+    return cartList[shopId] || {}
+  })
+
+  const allChecked = computed(() => {
+    const products = Object.values(cartList[shopId] || {})
+    return products.filter(p => p.count > 0).every((p) => p.check)
   })
 
   const changeCartItemChecked = (shopId, productId) => {
     store.commit('changeCartItemChecked', { shopId, productId })
   }
 
-  return { total, price, productList, changeCartItemInfo, changeCartItemChecked }
+  const emptyCartProducts = (shopId) => {
+    store.commit('emptyCartProducts', { shopId })
+  }
+
+  const setCartItemsChecked = (shopId) => {
+    store.commit('setCartItemsChecked', { shopId })
+  }
+
+  return {
+    total,
+    price,
+    productList,
+    allChecked,
+    changeCartItemInfo,
+    changeCartItemChecked,
+    emptyCartProducts,
+    setCartItemsChecked
+  }
 }
 
 export default {
@@ -94,10 +141,16 @@ export default {
   setup () {
     const route = useRoute()
     const shopId = route.params.id
+    const showCart = ref(false)
+    const handleCartShowChange = () => {
+      showCart.value = !showCart.value
+    }
 
     return {
       shopId,
-      ...useCartEffect(shopId)
+      ...useCartEffect(shopId),
+      showCart,
+      handleCartShowChange
     }
   }
 }
@@ -107,30 +160,69 @@ export default {
 @import '@/assets/stylesheets/variables.scss';
 @import '@/assets/stylesheets/mixins.scss';
 
+.mask {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  background: rgba(0, 0, 0 , .5);
+  z-index: 1;
+}
+
 .cart {
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
+  z-index: 2;
+  background: #FFF;
 }
+
 .product {
   overflow-y: scroll;
   flex: 1;
   background: $bgColor;
+  &__header {
+    display: flex;
+    line-height: .52rem;
+    border-bottom: 1px solid #F1F1F1;
+    font-size: .14rem;
+    color: #333;
+    &__all {
+      width: .64rem;
+      margin-left: .18rem;
+      display: flex;
+      align-items: center;
+    }
+    &__icon {
+      color: #666;
+      font-size: .2rem;
+      margin-right: .08rem;
+    }
+    &__icon--active {
+      color: #0091FF;
+    }
+    &__clear {
+      flex: 1;
+      margin-right: .18rem;
+      text-align: right;
+    }
+  }
   &__item {
     position: relative;
     display: flex;
     padding: .12rem 0;
     margin: 0 .16rem;
     border-bottom: .01rem solid $content-bgColor;
-    &__checked, &__unchecked {
+    &__check {
       line-height: .5rem;
       margin-right: .2rem;
-      color: #0091FF;
+      color: #666;
       font-size: .2rem;
     }
-    &__unchecked {
-      color: #666;
+    &__check--active {
+      color: #0091FF;
     }
     &__img {
       width: .46rem;

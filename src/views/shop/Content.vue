@@ -23,15 +23,19 @@
         </div>
         <div class="product__number">
           <span
-            v-show="item.count && item.count > 0"
+            v-show="cartList?.[`${shopId}`]?.[item._id]?.count"
             class="product__number__minus iconfont"
+            v-html="'&#xe65b;'"
             @click="changeCartItemInfo(shopId, item._id, item, -1)"
-          >&#xe65b;</span>
-          <span v-show="item.count && item.count > 0">{{item.count}}</span>
+          />
+          <span v-show="cartList?.[`${shopId}`]?.[item._id]?.count">
+            {{cartList?.[`${shopId}`]?.[item._id]?.count}}
+          </span>
           <span
             class="product__number__plus iconfont"
+            v-html="'&#xe624;'"
             @click="changeCartItemInfo(shopId, item._id, item, 1)"
-          >&#xe624;</span>
+          />
         </div>
       </div>
     </div>
@@ -50,7 +54,7 @@ const useCurrentListEffect = (currentTab, shopId) => {
   const getContentData = async () => {
     const result = await get(`/api/shop/${shopId}/products`, { tab: currentTab.value })
     if (result?.errno === 0 && result?.data?.length) {
-      content.list = result.data
+      content.list = result.data // TODO
     }
   }
 
@@ -71,12 +75,13 @@ export default {
     const currentTab = ref(categories[0].tab)
     const shopId = route.params.id
     const { list } = useCurrentListEffect(currentTab, shopId)
-    const { changeCartItemInfo } = useCommonCartEffect()
+    const { cartList, changeCartItemInfo } = useCommonCartEffect()
 
     return {
       categories,
       currentTab,
       list,
+      cartList,
       changeCartItemInfo,
       shopId
     }

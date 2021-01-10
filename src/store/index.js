@@ -15,14 +15,23 @@ const store = {
       }
       product.count += num
       if (product.count < 0) product.count = 0
-      if (num > 0) product.checked = true
+      if (num > 0) product.check = true
       shopInfo[productId] = product
       state.cartList[shopId] = shopInfo
     },
     changeCartItemChecked (state, payload) {
       const { shopId, productId } = payload
       const product = state.cartList[shopId][productId]
-      product.checked = !product.checked
+      product.check = !product.check
+    },
+    emptyCartProducts (state, payload) {
+      const { shopId } = payload
+      state.cartList[shopId] = {}
+    },
+    setCartItemsChecked (state, payload) {
+      const { shopId } = payload
+      const products = Object.values(state.cartList[shopId] || {})
+      products.forEach(prod => { prod.check = true })
     }
   },
   actions: {},
