@@ -1,5 +1,5 @@
 <template>
-  <div class="mask" v-if="showCart"/>
+  <div class="mask" v-if="showCart" @click="handleCartShowChange"/>
   <div class="cart">
     <div class="product" v-if="showCart">
       <div class="product__header">
@@ -9,14 +9,16 @@
               'product__header__icon', 'iconfont',
               {'product__header__icon--active': allChecked}
             ]"
-            v-html="allChecked ? '&#xe620;' : '&#xe601;'"
+            v-html="allChecked ? '&#xe620;' : '&#xe63f;'"
             @click="setCartItemsChecked(shopId)"
           />全选
         </div>
-        <div
-          class="product__header__clear"
-          @click="emptyCartProducts(shopId)"
-        >清空购物车</div>
+        <div class="product__header__clear">
+          <span
+            class="product__header__clear__btn"
+            @click="emptyCartProducts(shopId)"
+          >清空购物车</span>
+        </div>
       </div>
       <template v-for="item in productList">
         <div class="product__item" v-if="item.count > 0" :key="item._id">
@@ -25,7 +27,7 @@
               'product__item__check', 'iconfont',
               {'product__item__check--active': item.check}
             ]"
-            v-html="item.check ? '&#xe620;' : '&#xe601;'"
+            v-html="item.check ? '&#xe620;' : '&#xe63f;'"
             @click="changeCartItemChecked(shopId, item._id)"
           />
           <img class="product__item__img" :src="item.imgUrl" alt="tomato">
@@ -63,7 +65,9 @@
       <div class="check__info">
         总计：<span class="check__info__price">&yen; {{price}}</span>
       </div>
-      <div class="check__btn">去结算</div>
+      <router-link :to="{name: 'Home'}">
+        <div class="check__btn">去结算</div>
+      </router-link>
     </div>
   </div>
 </template>
@@ -74,8 +78,10 @@ import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import { useCommonCartEffect } from './commonCartEffect'
 
-const useCartEffect = (shopId) => {
+const useCartEffect = () => {
   const store = useStore()
+  const route = useRoute()
+  const shopId = route.params.id
   const { cartList } = store.state
   const { changeCartItemInfo } = useCommonCartEffect()
 
@@ -125,6 +131,7 @@ const useCartEffect = (shopId) => {
   }
 
   return {
+    shopId,
     total,
     price,
     productList,
@@ -136,21 +143,20 @@ const useCartEffect = (shopId) => {
   }
 }
 
+const toggleCartEffect = () => {
+  const showCart = ref(false)
+  const handleCartShowChange = () => {
+    showCart.value = !showCart.value
+  }
+  return { showCart, handleCartShowChange }
+}
+
 export default {
   name: 'Cart',
   setup () {
-    const route = useRoute()
-    const shopId = route.params.id
-    const showCart = ref(false)
-    const handleCartShowChange = () => {
-      showCart.value = !showCart.value
-    }
-
     return {
-      shopId,
-      ...useCartEffect(shopId),
-      showCart,
-      handleCartShowChange
+      ...useCartEffect(),
+      ...toggleCartEffect()
     }
   }
 }
@@ -166,7 +172,7 @@ export default {
   right: 0;
   bottom: 0;
   top: 0;
-  background: rgba(0, 0, 0 , .5);
+  background: rgba(0, 0, 0, .5);
   z-index: 1;
 }
 
@@ -176,7 +182,7 @@ export default {
   right: 0;
   bottom: 0;
   z-index: 2;
-  background: #FFF;
+  background: $bgColor;
 }
 
 .product {
@@ -186,9 +192,9 @@ export default {
   &__header {
     display: flex;
     line-height: .52rem;
-    border-bottom: 1px solid #F1F1F1;
+    border-bottom: 1px solid $content-bgColor;
     font-size: .14rem;
-    color: #333;
+    color: $content-fontColor;
     &__all {
       width: .64rem;
       margin-left: .18rem;
@@ -196,17 +202,20 @@ export default {
       align-items: center;
     }
     &__icon {
-      color: #666;
+      color: $medium-fontColor;
       font-size: .2rem;
       margin-right: .08rem;
     }
     &__icon--active {
-      color: #0091FF;
+      color: $btn-bgColor;
     }
     &__clear {
       flex: 1;
       margin-right: .18rem;
       text-align: right;
+      &__btn {
+        display: inline-block;
+      }
     }
   }
   &__item {
@@ -218,11 +227,11 @@ export default {
     &__check {
       line-height: .5rem;
       margin-right: .2rem;
-      color: #666;
+      color: $medium-fontColor;
       font-size: .2rem;
     }
     &__check--active {
-      color: #0091FF;
+      color: $btn-bgColor;
     }
     &__img {
       width: .46rem;
@@ -323,12 +332,15 @@ export default {
       font-size: .18rem;
     }
   }
+  a {
+    text-decoration: none;
+  }
   &__btn {
     width: .98rem;
     background: #4FB0F9;
     text-align: center;
-    color: $bgColor;
     font-size: .14rem;
+    color: $bgColor;
   }
 }
 </style>

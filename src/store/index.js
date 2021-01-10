@@ -31,7 +31,11 @@ const store = {
     setCartItemsChecked (state, payload) {
       const { shopId } = payload
       const products = Object.values(state.cartList[shopId] || {})
-      products.forEach(prod => { prod.check = true })
+      if (products.some(product => !product.check)) {
+        products.forEach(prod => { prod.check = true })
+      } else {
+        products.forEach(prod => { prod.check = false })
+      }
     }
   },
   actions: {},
