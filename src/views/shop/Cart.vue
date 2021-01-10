@@ -86,7 +86,7 @@ const useCartEffect = () => {
   const { changeCartItemInfo } = useCommonCartEffect()
 
   const total = computed(() => {
-    const productList = cartList[shopId]
+    const { productList } = cartList[shopId] || {}
     let count = 0
     if (productList) {
       for (const i in productList) {
@@ -97,7 +97,7 @@ const useCartEffect = () => {
   })
 
   const price = computed(() => {
-    const productList = cartList[shopId]
+    const { productList } = cartList[shopId] || {}
     let count = 0
     if (productList) {
       for (const i in productList) {
@@ -110,11 +110,11 @@ const useCartEffect = () => {
   })
 
   const productList = computed(() => {
-    return cartList[shopId] || {}
+    return cartList[shopId].productList || {}
   })
 
   const allChecked = computed(() => {
-    const products = Object.values(cartList[shopId] || {})
+    const products = Object.values(cartList[shopId]?.productList || {})
     return products.filter(p => p.count > 0).every((p) => p.check)
   })
 

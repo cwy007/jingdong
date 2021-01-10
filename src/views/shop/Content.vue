@@ -23,18 +23,18 @@
         </div>
         <div class="product__number">
           <span
-            v-show="cartList?.[`${shopId}`]?.[item._id]?.count"
+            v-show="cartList?.[`${shopId}`]?.productList[item._id]?.count"
             class="product__number__minus iconfont"
             v-html="'&#xe65b;'"
-            @click="changeCartItemInfo(shopId, item._id, item, -1)"
+            @click="changeCartItem(shopId, item._id, item, -1, shopName)"
           />
-          <span v-show="cartList?.[`${shopId}`]?.[item._id]?.count">
-            {{cartList?.[`${shopId}`]?.[item._id]?.count}}
+          <span v-show="cartList?.[`${shopId}`]?.productList[item._id]?.count">
+            {{cartList?.[`${shopId}`]?.productList[item._id]?.count}}
           </span>
           <span
             class="product__number__plus iconfont"
             v-html="'&#xe624;'"
-            @click="changeCartItemInfo(shopId, item._id, item, 1)"
+            @click="changeCartItem(shopId, item._id, item, 1, shopName)"
           />
         </div>
       </div>
@@ -47,6 +47,7 @@ import { reactive, toRefs, ref, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
 import { get } from '@/utils/request'
 import { useCommonCartEffect } from './commonCartEffect'
+import { useStore } from 'vuex'
 
 const useCurrentListEffect = (currentTab, shopId) => {
   const content = reactive({ list: [] })
@@ -65,24 +66,30 @@ const useCurrentListEffect = (currentTab, shopId) => {
 
 export default {
   name: 'Content',
+  props: ['shopName'],
   setup () {
     const categories = [
       { name: '全部商品', tab: 'all' },
       { name: '秒杀', tab: 'seckill' },
       { name: '新鲜水果', tab: 'fruit' }
     ]
+    const store = useStore()
     const route = useRoute()
     const currentTab = ref(categories[0].tab)
     const shopId = route.params.id
     const { list } = useCurrentListEffect(currentTab, shopId)
     const { cartList, changeCartItemInfo } = useCommonCartEffect()
+    const changeCartItem = (shopId, productId, productInfo, num, shopName) => {
+      changeCartItemInfo(shopId, productId, productInfo, num)
+      store.commit('changeShopName', { shopId, shopName })
+    }
 
     return {
       categories,
       currentTab,
       list,
       cartList,
-      changeCartItemInfo,
+      changeCartItem,
       shopId
     }
   }

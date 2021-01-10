@@ -8,7 +8,7 @@
       </div>
     </div>
     <ShopInfo :item="item" :showBorder="false" v-show="item.imgUrl" />
-    <Content />
+    <Content :shopName="item.name" />
     <Cart/>
   </div>
 </template>
@@ -24,7 +24,7 @@ import Cart from '@/views/shop/Cart.vue'
 /** 获取商铺信息 */
 const useShopInfoEffect = () => {
   const route = useRoute()
-  const data = reactive({ item: { imgUrl: '' } })
+  const data = reactive({ item: { imgUrl: '', name: '' } })
   const getItemData = async () => {
     const result = await get(`/api/shop/${route.params.id}`)
     if (result?.errno === 0 && result?.data) {
