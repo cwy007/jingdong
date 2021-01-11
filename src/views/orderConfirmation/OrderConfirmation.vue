@@ -2,7 +2,10 @@
   <div class="wrapper">
     <div class="top">
       <div class="top__header">
-        <div class="top__header__back iconfont">&#xe6a3;</div>
+        <div
+          class="top__header__back iconfont"
+          @click="handleClickBack"
+        >&#xe6a3;</div>
         <div class="top__header__title">确认订单</div>
       </div>
       <div class="top__receiver">
@@ -15,24 +18,29 @@
         <div class="top__receiver__icon iconfont">&#xe6a3;</div>
       </div>
     </div>
-    <div class="products">
-      <div class="products__shopname">{{shopName}}</div>
-      <div
-        class="products__item"
-        v-for="item in productList"
-        :key="item._id"
-      >
-        <img :src="item.imgUrl" alt="img" class="products__item__img">
-        <div class="products__item__detail">
-          <h4 class="products__item__title">{{item.name}}</h4>
-          <p class="products__item__price">
-            <span class="products__item__num">
-              <span class="products__item__yen">&yen;</span>{{item.price}} x {{item.count}}
-            </span>
-            <span class="products__item__total">
-              <span class="products__item__yen">&yen;</span>{{item.count * item.price}}
-            </span>
-          </p>
+    <div class="content">
+      <div class="shopname">{{shopName}}</div>
+      <div class="products_wrapper">
+        <div class="products">
+          <template v-for="item in productList" :key="item._id">
+            <div
+              class="products__item"
+              v-if="item.count > 0"
+            >
+              <img :src="item.imgUrl" alt="img" class="products__item__img">
+              <div class="products__item__detail">
+                <h4 class="products__item__title">{{item.name}}</h4>
+                <p class="products__item__price">
+                  <span class="products__item__num">
+                    <span class="products__item__yen">&yen;</span>{{item.price}} x {{item.count}}
+                  </span>
+                  <span class="products__item__total">
+                    <span class="products__item__yen">&yen;</span>{{item.count * item.price}}
+                  </span>
+                </p>
+              </div>
+            </div>
+          </template>
         </div>
       </div>
     </div>
@@ -41,9 +49,10 @@
 
 <script>
 import { computed } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useCommonCartEffect } from '@/effects/cartEffect'
 const useCartEffect = () => {
+  const router = useRouter()
   const route = useRoute()
   const shopId = route.params.id
   const { cartList } = useCommonCartEffect()
@@ -56,9 +65,14 @@ const useCartEffect = () => {
     return cartList[shopId]?.shopName || ''
   })
 
+  const handleClickBack = () => {
+    router.back()
+  }
+
   return {
     shopName,
-    productList
+    productList,
+    handleClickBack
   }
 }
 export default {
@@ -80,9 +94,8 @@ export default {
   left: 0;
   right: 0;
   top: 0;
-  bottom: .5rem;
+  bottom: 0;
   background: #F5F5F5;
-  overflow-y: scroll;
 }
 .top {
   position: relative;
@@ -142,49 +155,61 @@ export default {
     }
   }
 }
-.products {
-  margin: .16rem .18rem 0 .18rem;
-  padding: .16rem;
-  background: #FFF;
-  &__shopname {
-    padding-bottom: .16rem;
+.content {
+  margin: .16rem .18rem 0;
+  .shopname {
+    padding: .16rem;
     line-height: .22rem;
     font-size: .16rem;
     color: #333;
     font-weight: bold;
+    background: #FFF;
   }
-  &__item {
-    padding-bottom: .16rem;
-    display: flex;
-    &__img {
-      width: .46rem;
-      height: .46rem;
-      margin-right: .16rem;
-    }
-    &__detail {
-      flex: 1;
-    }
-    &__title {
-      margin: 0 0 .06rem 0;
-      line-height: .2rem;
-      font-size: .14rem;
-      font-weight: normal;
-      @include ellipsis;
-    }
-    &__price {
-      display: flex;
-      margin: 0;
-      line-height: .2rem;
-      font-size: .1rem;
-      color: #E93B3B;
-    }
-    &__yen {
-      font-size: .08rem;
-    }
-    &__total {
-      flex: 1;
-      text-align: right;
-      color: #000;
+  .products_wrapper {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 2.51rem;
+    bottom: .6rem;
+    overflow: scroll;
+    margin: 0 .18rem;
+    .products {
+      background: #FFF;
+      padding: 0 .16rem;
+      &__item {
+        padding-bottom: .16rem;
+        display: flex;
+        &__img {
+          width: .46rem;
+          height: .46rem;
+          margin-right: .16rem;
+        }
+        &__detail {
+          flex: 1;
+        }
+        &__title {
+          margin: 0 0 .06rem 0;
+          line-height: .2rem;
+          font-size: .14rem;
+          font-weight: normal;
+          @include ellipsis;
+        }
+        &__price {
+          display: flex;
+          margin: 0;
+          line-height: .2rem;
+          font-size: .1rem;
+          color: #E93B3B;
+        }
+        &__yen {
+          font-size: .08rem;
+        }
+        &__total {
+          flex: 1;
+          text-align: right;
+          color: #000;
+        }
+      }
     }
   }
 }
