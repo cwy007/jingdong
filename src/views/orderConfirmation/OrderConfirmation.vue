@@ -44,6 +44,12 @@
         </div>
       </div>
     </div>
+    <div class="order">
+      <div class="order__price">
+        实付金额<span class="order__price__num">¥{{price}}</span>
+      </div>
+      <div class="order__btn">提交订单</div>
+    </div>
   </div>
 </template>
 
@@ -69,10 +75,24 @@ const useCartEffect = () => {
     router.back()
   }
 
+  const price = computed(() => {
+    const { productList } = cartList[shopId] || {}
+    let count = 0
+    if (productList) {
+      for (const i in productList) {
+        if (productList[i].check) {
+          count += (productList[i].count * productList[i].price)
+        }
+      }
+    }
+    return count.toFixed(2)
+  })
+
   return {
     shopName,
     productList,
-    handleClickBack
+    handleClickBack,
+    price
   }
 }
 export default {
@@ -211,6 +231,33 @@ export default {
         }
       }
     }
+  }
+}
+.order {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: .49rem;
+  line-height: .49rem;
+  background: #FFF;
+  display: flex;
+  font-size: .14rem;
+  &__price {
+    flex: 1;
+    text-indent: .24rem;
+    color: #333;
+    &__num {
+      color: #151515;
+      font-size: .16rem;
+      margin-left: .02rem;
+    }
+  }
+  &__btn {
+    width: .98rem;
+    background: #4FB0F9;
+    color: #fff;
+    text-align: center;
   }
 }
 </style>
