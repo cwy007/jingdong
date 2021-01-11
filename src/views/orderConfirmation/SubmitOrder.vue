@@ -10,24 +10,32 @@
       <h3 class="mask__content__title">确认要离开收银台？</h3>
       <p class="mask__content__desc">请尽快完成支付，否则将被取消</p>
       <div class="mask__content__btns">
-        <div class="mask__content__btn" @click="handleCancelOrder">取消订单</div>
-        <div class="mask__content__btn" @click="handleConfirmOrder">确认支付</div>
+        <div class="mask__content__btn" @click="handleConfirmOrder(true)">取消订单</div>
+        <div class="mask__content__btn" @click="handleConfirmOrder(false)">确认支付</div>
       </div>
     </div>
   </div>
+  <Toast v-if="show" :message="message"/>
 </template>
 
 <script>
 import { computed } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
+import { useStore } from 'vuex'
+import { post } from '@/utils/request'
 import { useCommonCartEffect } from '@/effects/cartEffect'
+import Toast, { useToastEffect } from '@/components/Toast'
 
 export default {
   name: 'SubmitOrder',
-  setup () {
+  components: { Toast },
+  setup (props) {
+    const store = useStore()
+    const router = useRouter()
     const route = useRoute()
     const shopId = route.params.id
     const { cartList } = useCommonCartEffect()
+    const { show, message, showToast } = useToastEffect()
 
     const price = computed(() => {
       const { productList } = cartList[shopId] || {}
@@ -41,13 +49,36 @@ export default {
       }
       return count.toFixed(2)
     })
-    const handleCancelOrder = () => {
-      alert('cancel')
+
+    const shopName = computed(() => {
+      return cartList[shopId]?.shopName || ''
+    })
+    const products = computed(() => {
+      const p = cartList[shopId]?.productList || {}
+      return Object.values(p).map(item => {
+        return { id: parseInt(item._id, 10), num: item.num }
+      })
+    })
+    const handleConfirmOrder = async (isCanceled) => {
+      try {
+        const result = await post('/api/order2', {
+          addressId: 1,
+          shopId,
+          shopName: shopName.value,
+          isCanceled,
+          products: products.value
+        })
+        if (result?.errno === 0) {
+          store.commit('emptyCartProducts', { shopId })
+          router.push({ name: 'Login' })
+        } else {
+          showToast('注册失败')
+        }
+      } catch (e) {
+        showToast('请求失败')
+      }
     }
-    const handleConfirmOrder = () => {
-      alert('confirm')
-    }
-    return { price, handleCancelOrder, handleConfirmOrder }
+    return { price, handleConfirmOrder, show, message }
   }
 }
 </script>
