@@ -11,6 +11,25 @@ npm run build
 npm run lint
 ```
 
+## 项目页面
+
+* 注册
+  ![注册](https://tva1.sinaimg.cn/large/008eGmZEly1gmke531877j30ku112408.jpg)
+* 登录
+  ![登录](https://tva1.sinaimg.cn/large/008eGmZEly1gmke5g4a1sj30ku112abk.jpg)
+* 首页
+  ![首页](https://tva1.sinaimg.cn/large/008eGmZEly1gmke5r7lh6j30ku11e15a.jpg)
+* 商家详情页
+  ![商家详情页](https://tva1.sinaimg.cn/large/008eGmZEly1gmke67lfkkj30ku1127bm.jpg)
+* 商家详情页-遮罩
+  ![遮罩](https://tva1.sinaimg.cn/large/008eGmZEly1gmke6g5r20j30ku114agx.jpg)
+* 确认订单
+  ![确认订单](https://tva1.sinaimg.cn/large/008eGmZEly1gmke6sw82mj30ku112gp3.jpg)
+* 确认提交弹框
+  ![确认提交弹框](https://tva1.sinaimg.cn/large/008eGmZEly1gmke6z766oj30ku112tb4.jpg)
+* 我的订单
+  ![我的订单](https://tva1.sinaimg.cn/large/008eGmZEly1gmke774ykoj30ku11edhm.jpg)
+
 ## stylesheets
 
 * 1rem == 1 * html 元素的 font-size
@@ -126,3 +145,13 @@ Welcome to Node.js v12.16.2.
 
 * [watchEffect 它立即执行传入的一个函数，同时响应式追踪其依赖，并在其依赖变更时重新运行该函数](https://v3.cn.vuejs.org/guide/reactivity-computed-watchers.html#watcheffect)
 * transform, transform-origin
+* rem 布局的情况下，实现项目对不同设备的展示适配
+
+  ```html
+    <script>
+        var width = document.documentElement.clientWidth || document.body.clientWidth;
+        var ratio = width / 375;
+        var fontSize = 100 * ratio;
+        document.getElementsByTagName('html')[0].style['font-size'] = fontSize + 'px';
+    </script>
+  ```
