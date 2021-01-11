@@ -5,6 +5,16 @@
     </div>
     <div class="order__btn">提交订单</div>
   </div>
+  <div class="mask">
+    <div class="mask__content">
+      <h3 class="mask__content__title">确认要离开收银台？</h3>
+      <p class="mask__content__desc">请尽快完成支付，否则将被取消</p>
+      <div class="mask__content__btns">
+        <div class="mask__content__btn" @click="handleCancelOrder">取消订单</div>
+        <div class="mask__content__btn" @click="handleConfirmOrder">确认支付</div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -31,7 +41,13 @@ export default {
       }
       return count.toFixed(2)
     })
-    return { price }
+    const handleCancelOrder = () => {
+      alert('cancel')
+    }
+    const handleConfirmOrder = () => {
+      alert('confirm')
+    }
+    return { price, handleCancelOrder, handleConfirmOrder }
   }
 }
 </script>
@@ -64,6 +80,60 @@ export default {
     background: $light-btn-bgColor;
     color: $bgColor;
     text-align: center;
+  }
+}
+
+.mask {
+  z-index: 1;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, .5);
+  &__content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 3rem;
+    height: 1.56rem;
+    background: #fff;
+    text-align: center;
+    border-radius: .04rem;
+    &__title {
+      margin: .24rem 0 0 0;
+      line-height: .26rem;
+      font-size: .18rem;
+      color: #333;
+    }
+    &__desc {
+      margin: .08rem 0 0 0 0;
+      font-size: .14rem;
+      color: #666;
+    }
+    &__btns {
+      display: flex;
+      margin: .24rem .58rem;
+    }
+    &__btn {
+      flex: 1;
+      width: .8rem;
+      line-height: .32rem;
+      border-radius: .16rem;
+      font-size: .14rem;
+      &:nth-child(1) {
+        margin-right: .12rem;
+        border: .01rem solid #4FB0F9;
+        color: #4FB0F9;
+      }
+      &:nth-child(2) {
+        margin-left: .12rem;
+        border: .01rem solid #4FB0F9;
+        background: #4FB0F9;
+        color: $bgColor;
+      }
+    }
   }
 }
 </style>
