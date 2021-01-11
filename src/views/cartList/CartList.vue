@@ -4,7 +4,7 @@
 </template>
 
 <script>
-import Docker from '../home/Docker.vue'
+import Docker from '@/components/Docker.vue'
 
 export default {
   components: { Docker },

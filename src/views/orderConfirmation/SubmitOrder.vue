@@ -26,73 +26,75 @@ import { post } from '@/utils/request'
 import { useCommonCartEffect } from '@/effects/cartEffect'
 import Toast, { useToastEffect } from '@/components/Toast'
 
+const useCreateOrderEffect = () => {
+  const store = useStore()
+  const router = useRouter()
+  const route = useRoute()
+  const shopId = route.params.id
+  const { cartList } = useCommonCartEffect()
+  const { show, message, showToast } = useToastEffect()
+  const price = computed(() => {
+    const { productList } = cartList[shopId] || {}
+    let count = 0
+    if (productList) {
+      for (const i in productList) {
+        if (productList[i].check) {
+          count += (productList[i].count * productList[i].price)
+        }
+      }
+    }
+    return count.toFixed(2)
+  })
+
+  const shopName = computed(() => {
+    return cartList[shopId]?.shopName || ''
+  })
+
+  const products = computed(() => {
+    const p = cartList[shopId]?.productList || {}
+    return Object.values(p).map(item => {
+      return { id: parseInt(item._id, 10), num: item.num }
+    })
+  })
+
+  const handleConfirmOrder = async (isCanceled) => {
+    try {
+      const result = await post('/api/order', {
+        addressId: 1,
+        shopId,
+        shopName: shopName.value,
+        isCanceled,
+        products: products.value
+      })
+      if (result?.errno === 0) {
+        store.commit('emptyCartProducts', { shopId })
+        router.push({ name: 'OrderList' })
+      } else {
+        showToast('注册失败')
+      }
+    } catch (e) {
+      showToast('请求失败')
+    }
+  }
+
+  return { show, message, handleConfirmOrder, price }
+}
+
+const useShowMaskEffect = () => {
+  const showConfirm = ref(false)
+  const handleShowConformChange = (status) => {
+    showConfirm.value = status
+  }
+  return { showConfirm, handleShowConformChange }
+}
+
 export default {
   name: 'SubmitOrder',
   components: { Toast },
   setup (props) {
-    const store = useStore()
-    const router = useRouter()
-    const route = useRoute()
-    const shopId = route.params.id
-    const showConfirm = ref(false)
-    const { cartList } = useCommonCartEffect()
-    const { show, message, showToast } = useToastEffect()
-
-    const price = computed(() => {
-      const { productList } = cartList[shopId] || {}
-      let count = 0
-      if (productList) {
-        for (const i in productList) {
-          if (productList[i].check) {
-            count += (productList[i].count * productList[i].price)
-          }
-        }
-      }
-      return count.toFixed(2)
-    })
-
-    const shopName = computed(() => {
-      return cartList[shopId]?.shopName || ''
-    })
-
-    const products = computed(() => {
-      const p = cartList[shopId]?.productList || {}
-      return Object.values(p).map(item => {
-        return { id: parseInt(item._id, 10), num: item.num }
-      })
-    })
-
-    const handleConfirmOrder = async (isCanceled) => {
-      try {
-        const result = await post('/api/order', {
-          addressId: 1,
-          shopId,
-          shopName: shopName.value,
-          isCanceled,
-          products: products.value
-        })
-        if (result?.errno === 0) {
-          store.commit('emptyCartProducts', { shopId })
-          router.push({ name: 'Login' })
-        } else {
-          showToast('注册失败')
-        }
-      } catch (e) {
-        showToast('请求失败')
-      }
-    }
-
-    const handleShowConformChange = (status) => {
-      showConfirm.value = status
-    }
-
     return {
-      price,
-      handleConfirmOrder,
-      show,
-      message,
-      showConfirm,
-      handleShowConformChange
+      ...useCreateOrderEffect(),
+      ...useShowMaskEffect()
     }
   }
 }

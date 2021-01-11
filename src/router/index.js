@@ -7,18 +7,24 @@ const routes = [
     component: () => import(/* webpackChunkName: "home" */ '@/views/home/Home')
   },
   {
+    path: '/my',
+    name: 'My',
+    component: () => import(/* webpackChunkName: "home" */ '@/views/my/My')
+  },
+  {
     path: '/cartList',
     name: 'CartList',
-    component: () =>
-      import(/* webpackChunkName: 'cartList' */ '@/views/cartList/CartList')
+    component: () => import(/* webpackChunkName: 'cartList' */ '@/views/cartList/CartList')
   },
   {
     path: '/orderConfirmation/:id',
     name: 'OrderConfirmation',
-    component: () =>
-      import(
-        /* webpackChunkName: 'cartList' */ '@/views/orderConfirmation/OrderConfirmation'
-      )
+    component: () => import(/* webpackChunkName: 'cartList' */ '@/views/orderConfirmation/OrderConfirmation')
+  },
+  {
+    path: '/orderList',
+    name: 'OrderList',
+    component: () => import(/* webpackChunkName: 'cartList' */ '@/views/orderList/OrderList')
   },
   {
     path: '/shop/:id',
@@ -28,8 +34,7 @@ const routes = [
   {
     path: '/signup',
     name: 'Signup',
-    component: () =>
-      import(/* webpackChunkName: "signup" */ '@/views/signup/Signup'),
+    component: () => import(/* webpackChunkName: "signup" */ '@/views/signup/Signup'),
     beforeEnter (to, from, next) {
       const { isLogin } = localStorage
       isLogin ? next({ name: 'Home' }) : next()
@@ -38,8 +43,7 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: () =>
-      import(/* webpackChunkName: "login" */ '@/views/login/Login'),
+    component: () => import(/* webpackChunkName: "login" */ '@/views/login/Login'),
     beforeEnter (to, from, next) {
       const { isLogin } = localStorage
       isLogin ? next({ name: 'Home' }) : next()

@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import Docker from '@/views/home/Docker.vue'
+import Docker from '@/components/Docker.vue'
 import Nearby from './Nearby.vue'
 import StaticPart from './StaticPart.vue'
 export default {
