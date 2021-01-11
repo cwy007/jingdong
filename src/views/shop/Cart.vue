@@ -338,7 +338,7 @@ export default {
   }
   &__btn {
     width: .98rem;
-    background: #4FB0F9;
+    background: $light-btn-bgColor;
     text-align: center;
     font-size: .14rem;
     color: $bgColor;
