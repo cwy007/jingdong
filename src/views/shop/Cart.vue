@@ -76,7 +76,7 @@
 import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
-import { useCommonCartEffect } from './commonCartEffect'
+import { useCommonCartEffect } from '@/effects/cartEffect'
 
 const useCartEffect = () => {
   const store = useStore()

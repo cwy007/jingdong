@@ -46,7 +46,7 @@
 import { reactive, toRefs, ref, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
 import { get } from '@/utils/request'
-import { useCommonCartEffect } from './commonCartEffect'
+import { useCommonCartEffect } from '@/effects/cartEffect'
 import { useStore } from 'vuex'
 
 const useCurrentListEffect = () => {
