@@ -14,22 +14,21 @@ npm run lint
 ## 项目页面
 
 * 注册
-  ![注册](https://tva1.sinaimg.cn/large/008eGmZEly1gmke531877j30ku112408.jpg)
+  ![注册](https://tva1.sinaimg.cn/large/008eGmZEly1gmkeheytepj309q0hbq3h.jpg)
 * 登录
-  ![登录](https://tva1.sinaimg.cn/large/008eGmZEly1gmke5g4a1sj30ku112abk.jpg)
+  ![登录](https://tva1.sinaimg.cn/large/008eGmZEly1gmkei1die3j309q0hbjru.jpg)
 * 首页
-  ![首页](https://tva1.sinaimg.cn/large/008eGmZEly1gmke5r7lh6j30ku11e15a.jpg)
+  ![首页](https://tva1.sinaimg.cn/large/008eGmZEly1gmkeik0926j309q0hg0wy.jpg)
 * 商家详情页
-  ![商家详情页](https://tva1.sinaimg.cn/large/008eGmZEly1gmke67lfkkj30ku1127bm.jpg)
+  ![商家详情页](https://tva1.sinaimg.cn/large/008eGmZEly1gmkeivr8q4j309q0hb413.jpg)
 * 商家详情页-遮罩
-  ![遮罩](https://tva1.sinaimg.cn/large/008eGmZEly1gmke6g5r20j30ku114agx.jpg)
+  ![商家详情页-遮罩](https://tva1.sinaimg.cn/large/008eGmZEly1gmkej6vtpkj309q0hb0vg.jpg)
 * 确认订单
-  ![确认订单](https://tva1.sinaimg.cn/large/008eGmZEly1gmke6sw82mj30ku112gp3.jpg)
+  ![确认订单](https://tva1.sinaimg.cn/large/008eGmZEly1gmkejeoc0qj309q0hbta4.jpg)
 * 确认提交弹框
-  ![确认提交弹框](https://tva1.sinaimg.cn/large/008eGmZEly1gmke6z766oj30ku112tb4.jpg)
+  ![确认提交弹框](https://tva1.sinaimg.cn/large/008eGmZEly1gmkejj2ucpj309q0hbab5.jpg)
 * 我的订单
-  ![我的订单](https://tva1.sinaimg.cn/large/008eGmZEly1gmke774ykoj30ku11edhm.jpg)
-
+  ![我的订单](https://tva1.sinaimg.cn/large/008eGmZEly1gmkejr71phj309q0hg74r.jpg)
 ## stylesheets
 
 * 1rem == 1 * html 元素的 font-size
