@@ -65,7 +65,10 @@
       <div class="check__info">
         总计：<span class="check__info__price">&yen; {{price}}</span>
       </div>
-      <router-link :to="{name: 'OrderConfirmation', params: {id: shopId}}">
+      <router-link
+        :to="{name: 'OrderConfirmation', params: {id: shopId}}"
+        v-show="total > 0"
+      >
         <div class="check__btn">去结算</div>
       </router-link>
     </div>

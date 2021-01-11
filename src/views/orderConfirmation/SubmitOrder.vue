@@ -3,10 +3,10 @@
     <div class="order__price">
       实付金额<span class="order__price__num">¥{{price}}</span>
     </div>
-    <div class="order__btn">提交订单</div>
+    <div class="order__btn" @click="handleShowConformChange(true)">提交订单</div>
   </div>
-  <div class="mask">
-    <div class="mask__content">
+  <div class="mask" v-show="showConfirm" @click="handleShowConformChange(false)">
+    <div class="mask__content" @click.stop>
       <h3 class="mask__content__title">确认要离开收银台？</h3>
       <p class="mask__content__desc">请尽快完成支付，否则将被取消</p>
       <div class="mask__content__btns">
@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { post } from '@/utils/request'
@@ -34,6 +34,7 @@ export default {
     const router = useRouter()
     const route = useRoute()
     const shopId = route.params.id
+    const showConfirm = ref(false)
     const { cartList } = useCommonCartEffect()
     const { show, message, showToast } = useToastEffect()
 
@@ -53,15 +54,17 @@ export default {
     const shopName = computed(() => {
       return cartList[shopId]?.shopName || ''
     })
+
     const products = computed(() => {
       const p = cartList[shopId]?.productList || {}
       return Object.values(p).map(item => {
         return { id: parseInt(item._id, 10), num: item.num }
       })
     })
+
     const handleConfirmOrder = async (isCanceled) => {
       try {
-        const result = await post('/api/order2', {
+        const result = await post('/api/order', {
           addressId: 1,
           shopId,
           shopName: shopName.value,
@@ -78,7 +81,19 @@ export default {
         showToast('请求失败')
       }
     }
-    return { price, handleConfirmOrder, show, message }
+
+    const handleShowConformChange = (status) => {
+      showConfirm.value = status
+    }
+
+    return {
+      price,
+      handleConfirmOrder,
+      show,
+      message,
+      showConfirm,
+      handleShowConformChange
+    }
   }
 }
 </script>
