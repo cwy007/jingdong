@@ -28,6 +28,7 @@
 
 <script>
 import { useRouter, useRoute } from 'vue-router'
+import useCommonAddressEffect from '@/effects/addressEffect'
 import useAddressEffect from './addressEffect'
 
 export default {
@@ -38,6 +39,8 @@ export default {
     const shopId = route.params.id
     const handleClickBack = () => router.back()
     const handleAddressClick = () => router.push(`/chooseAddressList/${shopId}`)
+    const { getAddressList } = useCommonAddressEffect()
+    getAddressList()
     const address = useAddressEffect()
 
     return {
