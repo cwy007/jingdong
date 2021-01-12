@@ -67,7 +67,7 @@
       </div>
       <router-link
         :to="{name: 'OrderConfirmation', params: {id: shopId}}"
-        v-show="total > 0"
+        v-show="showSubmitBtn"
       >
         <div class="check__btn">去结算</div>
       </router-link>
@@ -93,6 +93,18 @@ const useCartEffect = () => {
       showCart.value = !showCart.value
     }
   }
+
+  const showSubmitBtn = computed(() => {
+    const { productList } = cartList[shopId] || {}
+    if (productList) {
+      for (const i in productList) {
+        if (productList[i].check) {
+          return total.value > 0
+        }
+      }
+    }
+    return false
+  })
 
   const total = computed(() => {
     const { productList } = cartList[shopId] || {}
@@ -152,7 +164,8 @@ const useCartEffect = () => {
     emptyCartProducts,
     setCartItemsChecked,
     handleCartShowChange,
-    showCart
+    showCart,
+    showSubmitBtn
   }
 }
 

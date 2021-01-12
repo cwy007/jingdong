@@ -39,7 +39,6 @@ export default {
     const handleClickBack = () => router.back()
     const handleAddressClick = () => router.push(`/chooseAddressList/${shopId}`)
     const address = useAddressEffect()
-    console.log(address.value)
 
     return {
       handleClickBack,

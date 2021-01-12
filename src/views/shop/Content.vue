@@ -111,6 +111,7 @@ export default {
   right: 0;
   top: 1.56rem;
   bottom: .5rem;
+  overflow-y: scroll;
 }
 .category {
   overflow-y: scroll;

@@ -16,20 +16,32 @@ npm run lint
 * 注册
 * 登录
 * 首页
+* 购物车页
 * 商家详情页
 * 商家详情页-遮罩
 * 确认订单
+* 选择收货地址
 * 确认提交弹框
 * 我的订单
+* 个人中心
+* 地址列表
+* 新建地址
+* 修改地址
 
 ![注册](https://tva1.sinaimg.cn/large/008eGmZEly1gmkeheytepj309q0hbq3h.jpg)
 ![登录](https://tva1.sinaimg.cn/large/008eGmZEly1gmkei1die3j309q0hbjru.jpg)
 ![首页](https://tva1.sinaimg.cn/large/008eGmZEly1gmkeik0926j309q0hg0wy.jpg)
+![购物车页](https://tva1.sinaimg.cn/large/008eGmZEly1gmlg39e0ghj309q0hg0uh.jpg)
 ![商家详情页](https://tva1.sinaimg.cn/large/008eGmZEly1gmkeivr8q4j309q0hb413.jpg)
 ![商家详情页-遮罩](https://tva1.sinaimg.cn/large/008eGmZEly1gmkej6vtpkj309q0hb0vg.jpg)
 ![确认订单](https://tva1.sinaimg.cn/large/008eGmZEly1gmkejeoc0qj309q0hbta4.jpg)
+![选择收货地址](https://tva1.sinaimg.cn/large/008eGmZEly1gmlg3klu7qj309q0hb74r.jpg)
 ![确认提交弹框](https://tva1.sinaimg.cn/large/008eGmZEly1gmkejj2ucpj309q0hbab5.jpg)
 ![我的订单](https://tva1.sinaimg.cn/large/008eGmZEly1gmkejr71phj309q0hg74r.jpg)
+![个人中心](https://tva1.sinaimg.cn/large/008eGmZEly1gmlg2t6qo1j309q0hbdhl.jpg)
+![地址列表](https://tva1.sinaimg.cn/large/008eGmZEly1gmlg49i1cyj309q0hbt98.jpg)
+![新建地址](https://tva1.sinaimg.cn/large/008eGmZEly1gmlg4j9n5dj309q0hbmxq.jpg)
+![修改地址](https://tva1.sinaimg.cn/large/008eGmZEly1gmlg4mzhlhj309q0hb0t5.jpg)
 
 ## stylesheets
 

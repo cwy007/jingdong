@@ -6,7 +6,7 @@
         <template v-for="item in productList" :key="item._id">
           <div
             class="products__item"
-            v-if="item.count > 0"
+            v-if="item.count > 0 && item.check"
           >
             <img :src="item.imgUrl" alt="img" class="products__item__img">
             <div class="products__item__detail">
