@@ -46,6 +46,7 @@ export default {
   height: .5rem;
   border-top: .01rem solid $content-bgColor;
   padding: $wrapper-padding;
+  background: $bgColor;
   &__item {
     flex: 1;
     a {
