@@ -1,59 +1,30 @@
 <template>
   <div class="wrapper">
-    <div class="title">我的全部购物车（2）</div>
+    <div class="title">我的全部购物车{{`（${cartNum}）`}}</div>
     <div class="shops">
-      <div class="empty">购物车当前为空</div>
-      <div class="shop">
-        <div class="shop__title"></div>
-        <div class="products">
-          <div class="products__item">
-            <img src="http://www.dell-lee.com/imgs/vue3/tomato.png" class="products__item__img"/>
-            <div class="products__item__detail">
-              <h4 class="products__item__title"></h4>
-              <p class="products__item__price">
-                <span class="products__item__num">
-                  <span class="products__item__yen">&yen;</span>33.6 x 3
-                </span>
-                <span class="products__item__total">
-                  <span class="products__item__yen">&yen;</span>99.9
-                </span>
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+      <div class="empty" v-if="cartNum === 0">购物车当前为空</div>
 
-      <div class="shop">
-        <div class="shop__title">京东7FRESH七鲜</div>
+      <div class="shop" v-for="(item, index) in cartListWithProducts" :key="index">
+        <div class="shop__title">{{item.shopName}}</div>
         <div class="products">
-          <div class="products__item">
-            <img src="http://www.dell-lee.com/imgs/vue3/tomato.png" class="products__item__img"/>
-            <div class="products__item__detail">
-              <h4 class="products__item__title">番茄250g/份</h4>
-              <p class="products__item__price">
-                <span class="products__item__num">
-                  <span class="products__item__yen">&yen;</span>33.6 x 3
-                </span>
-                <span class="products__item__total">
-                  <span class="products__item__yen">&yen;</span>99.9
-                </span>
-              </p>
+          <template v-for="product in item.productList" :key="product._id">
+            <div class="products__item" v-if="product.count > 0">
+              <img :src="product.imgUrl" class="products__item__img"/>
+              <div class="products__item__detail">
+                <h4 class="products__item__title">{{product.name}}</h4>
+                <p class="products__item__price">
+                  <span class="products__item__num">
+                    <span class="products__item__yen">&yen;</span>
+                    {{product.price}} x {{product.count}}
+                  </span>
+                  <span class="products__item__total">
+                    <span class="products__item__yen">&yen;</span>
+                    {{((product.price || 0) * (product.count || 0)).toFixed(2)}}
+                  </span>
+                </p>
+              </div>
             </div>
-          </div>
-          <div class="products__item">
-            <img src="http://www.dell-lee.com/imgs/vue3/tomato.png" class="products__item__img"/>
-            <div class="products__item__detail">
-              <h4 class="products__item__title">番茄250g/份</h4>
-              <p class="products__item__price">
-                <span class="products__item__num">
-                  <span class="products__item__yen">&yen;</span>33.6 x 3
-                </span>
-                <span class="products__item__total">
-                  <span class="products__item__yen">&yen;</span>99.9
-                </span>
-              </p>
-            </div>
-          </div>
+          </template>
         </div>
       </div>
     </div>
@@ -62,11 +33,38 @@
 </template>
 
 <script>
+import { computed } from 'vue'
+import { useStore } from 'vuex'
 import Docker from '@/components/Docker.vue'
 
 export default {
   components: { Docker },
-  name: 'CartList'
+  name: 'CartList',
+  setup () {
+    const store = useStore()
+    const { cartList } = store.state
+    const cartListWithProducts = computed(() => {
+      const newCartList = {}
+      for (const shopId in cartList) {
+        let total = 0
+        const products = cartList[shopId].productList
+        for (const productId in products) {
+          const product = products[productId]
+          total += (product.count || 0)
+        }
+        if (total > 0) {
+          newCartList[shopId] = cartList[shopId]
+        }
+      }
+      return newCartList
+    })
+
+    const cartNum = computed(() => {
+      return Object.keys(cartListWithProducts.value).length
+    })
+
+    return { cartListWithProducts, cartNum }
+  }
 }
 </script>
 
@@ -80,13 +78,13 @@ export default {
   right: 0;
   top: 0;
   bottom: 0;
-  background: #f8f8f8;
+  background: $light-content-bgColor;
   .title {
     height: .44rem;
     line-height: .44rem;
     text-align: center;
     font-size: .16rem;
-    color: #333;
+    color: $content-fontColor;
     background: $bgColor;
   }
   .shops {
@@ -106,7 +104,7 @@ export default {
       background: $bgColor;
       line-height: .44;
       font-size: .16rem;
-      color: #999;
+      color: $light-fontColor;
       text-align: center;
     }
   }
@@ -120,7 +118,7 @@ export default {
     height: .54rem;
     line-height: .54rem;
     font-size: .16rem;
-    color: #333;
+    color: $content-fontColor;
   }
   .products {
     &__item {
@@ -137,13 +135,13 @@ export default {
           margin: 0;
           line-height: .2rem;
           font-size: .14rem;
-          color: #333;
+          color: $content-fontColor;
         }
         .products__item__price {
           display: flex;
           font-size: .1rem;
           .products__item__num {
-            color: #E93B3B;
+            color: $hightlight-fontColor;
           }
           .products__item__total {
             flex: 1;
