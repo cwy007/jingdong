@@ -24,7 +24,11 @@ export default {
       { icon: '&#xe602;', text: '首页', to: { name: 'Home' } },
       { icon: '&#xe645;', text: '购物车', to: { name: 'CartList' } },
       { icon: '&#xe600;', text: '订单', to: { name: 'OrderList' } },
-      { icon: '&#xe65f;', text: '我的', to: { name: 'Profile' } }
+      {
+        icon: route.name === 'Profile' ? '&#xe604;' : '&#xe65f;',
+        text: '我的',
+        to: { name: 'Profile' }
+      }
     ]
     return {
       dockerList,

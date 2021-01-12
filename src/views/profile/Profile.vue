@@ -5,7 +5,7 @@
       <div class="header__card">
         <img src="https://tva1.sinaimg.cn/large/008eGmZEly1gml41hovzaj305z05zwek.jpg" class="header__card__img">
         <div class="header__card__nickname">
-          热心市民陈先生
+          {{userInfo.username}}
           <span class="badge">
             <span class="star">
               <span class="iconfont">&#xe60a;</span>
@@ -13,7 +13,7 @@
             16
           </span>
         </div>
-        <div class="header__card__userid">ID: 1069643013</div>
+        <div class="header__card__userid">ID: {{userInfo._id}}</div>
         <div class="header__card__items">
           <div class="header__card__item">
             <span class="header__card__item__name">红包</span>
@@ -53,15 +53,47 @@
         <span class="iconfont links__item__enter">&#xe6a3;</span>
       </div>
     </div>
+    <div class="logout" @click="handleLogoutClick">退出登录</div>
     <Docker/>
   </div>
 </template>
 
 <script>
+import { reactive } from 'vue'
+import { get } from '@/utils/request'
 import Docker from '@/components/Docker.vue'
+import { useRouter } from 'vue-router'
+
+const useUserEffect = () => {
+  const userInfo = reactive({ _id: '', username: '' })
+
+  const getUserInfo = async () => {
+    const result = await get('/api/user/info')
+    if (result?.errno === 0 && result?.data) {
+      const { _id, username } = result.data
+      userInfo._id = _id || ''
+      userInfo.username = username || ''
+    }
+  }
+  getUserInfo()
+
+  return { userInfo }
+}
+
 export default {
   name: 'Profile',
-  components: { Docker }
+  components: { Docker },
+  setup () {
+    const router = useRouter()
+    const handleLogoutClick = () => {
+      localStorage.removeItem('isLogin')
+      router.replace({ name: 'Login' })
+    }
+    return {
+      ...useUserEffect(),
+      handleLogoutClick
+    }
+  }
 }
 </script>
 
@@ -85,7 +117,7 @@ export default {
   &::before, &::after {
     content: '';
     display: inline-block;
-    border-top: .6rem solid #fff;
+    border-top: .6rem solid $bgColor;
     border-left: .6rem solid transparent;
     border-right: .6rem solid transparent;
     position: absolute;
@@ -103,7 +135,7 @@ export default {
     position: absolute;
     top: .4rem;
     right: .21rem;
-    color: #fff;
+    color: $bgColor;
     font-size: .2rem;
   }
   &__card {
@@ -114,7 +146,7 @@ export default {
     width: 3.39rem;
     height: 2.03rem;
     border-radius: .08rem;
-    background: #fff;
+    background: $bgColor;
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.08);
     text-align: center;
     z-index: 1;
@@ -142,7 +174,7 @@ export default {
         border-radius: .08rem;
         font-size: .1rem;
         padding: 0 .08rem 0 .02rem;
-        color: #fff;
+        color: $bgColor;
         .star {
           width: .11rem;
           height: .11rem;
@@ -191,7 +223,7 @@ export default {
 }
 .links {
   margin: .77rem .18rem 0 .18rem;
-  background: #FFF;
+  background: $bgColor;
   box-shadow: 0 .08rem .16rem 0 rgba(0,0,0,0.08);
   border-radius: .08rem;
   padding: .04rem .16rem;
@@ -212,7 +244,7 @@ export default {
       line-height: .22rem;
       background: #ED4A47;
       border-radius: .08rem;
-      color: #fff;
+      color: $bgColor;
       text-align: center;
       font-size: .13rem;
       margin-right: .12rem;
@@ -231,5 +263,15 @@ export default {
       color: #C2C4CA;
     }
   }
+}
+.logout {
+  margin: .16rem .18rem;
+  text-align: center;
+  color: $bgColor;
+  background: $btn-bgColor;
+  font-size: .16rem;
+  line-height: .4rem;
+  border-radius: .04rem;
+  box-shadow: 0 .04rem .08rem 0 rgba(0, 145, 255, .32);
 }
 </style>
