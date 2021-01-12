@@ -15,7 +15,8 @@ const getLocalCartList = () => {
 
 const store = {
   state: {
-    cartList: getLocalCartList()
+    cartList: getLocalCartList(),
+    addressList: []
   },
   mutations: {
     changeCartItemInfo (state, payload) {
@@ -70,6 +71,9 @@ const store = {
         })
       }
       setLocalCartList(state)
+    },
+    changeAddressList (state, addressList) {
+      state.addressList.splice(0, state.addressList.length, ...addressList)
     }
   }
 }

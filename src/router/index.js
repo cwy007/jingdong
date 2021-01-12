@@ -17,6 +17,11 @@ const routes = [
     component: () => import(/* webpackChunkName: "home" */ '@/views/myAddressList/MyAddressList')
   },
   {
+    path: '/upsertAddress/:id?',
+    name: 'UpsertAddress',
+    component: () => import(/* webpackChunkName: "upsertAddress" */ '../views/upsertAddress/UpsertAddress')
+  },
+  {
     path: '/cartList',
     name: 'CartList',
     component: () => import(/* webpackChunkName: 'cartList' */ '@/views/cartList/CartList')
