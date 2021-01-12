@@ -9,27 +9,43 @@
     </div>
     <div class="top__receiver">
       <div class="top__receiver__title">收货地址</div>
-      <div class="top__receiver__address">北京理工大学国防科技园2号楼10层</div>
-      <div class="top__receiver__info">
-        <span class="top__receiver__info__item">瑶妹（先生）</span>
-        <span class="top__receiver__info__item">18988886666</span>
+      <div v-if="address" @click="handleAddressClick">
+        <div class="top__receiver__address">
+          {{address.city}}{{address.department}}{{address.houseNumber}}
+        </div>
+        <div class="top__receiver__info">
+          <span class="top__receiver__info__item">{{address.name}}</span>
+          <span class="top__receiver__info__item">{{address.phone}}</span>
+        </div>
+        <div class="top__receiver__icon iconfont">&#xe6a3;</div>
       </div>
-      <div class="top__receiver__icon iconfont">&#xe6a3;</div>
+      <div v-else>
+        <div class="top__receiver__address">暂无可用地址</div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
+import useAddressEffect from './addressEffect'
 
 export default {
   name: 'OrderConfirmation',
   setup () {
     const router = useRouter()
-    const handleClickBack = () => {
-      router.back()
+    const route = useRoute()
+    const shopId = route.params.id
+    const handleClickBack = () => router.back()
+    const handleAddressClick = () => router.push(`/chooseAddressList/${shopId}`)
+    const address = useAddressEffect()
+    console.log(address.value)
+
+    return {
+      handleClickBack,
+      handleAddressClick,
+      address
     }
-    return { handleClickBack }
   }
 }
 </script>

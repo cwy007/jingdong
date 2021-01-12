@@ -2,17 +2,16 @@
   <div class="wrapper">
     <div class="title">
       <div
-        class="iconfont title__back"
+        class="iconfont title__icon"
         @click="handleBackClick"
-      >&#xe6a3;</div>
-      <div class="title__text">管理收货地址</div>
-      <div class="title__add" @click="handleAddClick">新建</div>
+      >&#xe6f2;</div>
+      收货地址
     </div>
     <Address
       v-for="address in addressList"
       :key="address._id"
       :address="address"
-      @click="() => handleUpdateClick(address._id)"
+      @click="() => handleAddressClick(address._id)"
     />
   </div>
 </template>
@@ -20,29 +19,29 @@
 <script>
 import { toRefs } from 'vue'
 import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import Address from '@/components/Address'
 import useCommonAddressEffect from '@/effects/addressEffect'
 
 export default {
-  name: 'MyAddressList',
+  name: 'ChooseAddressList',
   components: { Address },
   setup () {
     const store = useStore()
     const router = useRouter()
+    const route = useRoute()
+    const shopId = route.params.shopId
     const { addressList } = toRefs(store.state)
     const { getAddressList } = useCommonAddressEffect()
-    getAddressList(true)
+    getAddressList()
     const handleBackClick = () => { router.back() }
-    const handleAddClick = () => { router.push({ name: 'UpsertAddress' }) }
-    const handleUpdateClick = (addressId) => {
-      router.push(`/upsertAddress/${addressId}`)
+    const handleAddressClick = (addressId) => {
+      router.push(`/orderConfirmation/${shopId}/${addressId}`)
     }
     return {
       addressList,
       handleBackClick,
-      handleAddClick,
-      handleUpdateClick
+      handleAddressClick
     }
   }
 }
@@ -50,6 +49,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/assets/stylesheets/variables.scss';
+
 .wrapper {
   overflow-y: auto;
   position: absolute;
@@ -60,25 +60,17 @@ export default {
   background: $light-content-bgColor;
 }
 .title {
-  display: flex;
+  position: relative;
   line-height: .44rem;
   background: $bgColor;
   font-size: .16rem;
   color: $content-fontColor;
   text-align: center;
-  &__back {
-    width: .2rem;
-    margin-left: .18rem;
+  &__icon {
+    position: absolute;
+    left: .18rem;
+    top: 0;
     font-size: .2rem;
-    color: #B6B6B6;
-  }
-  &__text {
-    flex: 1;
-    text-align: center;
-  }
-  &__add {
-    margin-right: .2rem;
-    font-size: .14rem;
   }
 }
 </style>

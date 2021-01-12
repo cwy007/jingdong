@@ -3,7 +3,11 @@
     <div class="order__price">
       实付金额<span class="order__price__num">¥{{price}}</span>
     </div>
-    <div class="order__btn" @click="handleShowConformChange(true)">提交订单</div>
+    <div
+      v-if="address"
+      class="order__btn"
+      @click="handleShowConformChange(true)"
+    >提交订单</div>
   </div>
   <div class="mask" v-show="showConfirm" @click="handleShowConformChange(false)">
     <div class="mask__content" @click.stop>
@@ -25,6 +29,7 @@ import { useStore } from 'vuex'
 import { post } from '@/utils/request'
 import { useCommonCartEffect } from '@/effects/cartEffect'
 import Toast, { useToastEffect } from '@/components/Toast'
+import useAddressEffect from './addressEffect'
 
 const useCreateOrderEffect = () => {
   const store = useStore()
@@ -33,6 +38,8 @@ const useCreateOrderEffect = () => {
   const shopId = route.params.id
   const { cartList } = useCommonCartEffect()
   const { show, message, showToast } = useToastEffect()
+  const address = useAddressEffect()
+
   const price = computed(() => {
     const { productList } = cartList[shopId] || {}
     let count = 0
@@ -60,7 +67,7 @@ const useCreateOrderEffect = () => {
   const handleConfirmOrder = async (isCanceled) => {
     try {
       const result = await post('/api/order', {
-        addressId: 1,
+        addressId: address.value._id,
         shopId,
         shopName: shopName.value,
         isCanceled,
@@ -77,7 +84,7 @@ const useCreateOrderEffect = () => {
     }
   }
 
-  return { show, message, handleConfirmOrder, price }
+  return { show, message, handleConfirmOrder, price, address }
 }
 
 const useShowMaskEffect = () => {

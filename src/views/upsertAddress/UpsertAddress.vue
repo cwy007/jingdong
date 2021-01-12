@@ -39,14 +39,15 @@
 import { toRefs, reactive } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
-import { post, get, patch } from '../../utils/request'
-import useCommonAddressEffect from '../../effects/addressEffect'
+import { post, get, patch } from '@/utils/request'
+import useCommonAddressEffect from '@/effects/addressEffect'
 
 const useAddressEffect = () => {
   const store = useStore()
   const { addressList } = toRefs(store.state)
   const { getAddressList } = useCommonAddressEffect()
   getAddressList()
+
   return { addressList }
 }
 
@@ -55,6 +56,7 @@ const useFormEffect = (addressId) => {
   const formData = reactive({
     city: '', department: '', houseNumber: '', name: '', phone: ''
   })
+
   const getAddressItem = async () => {
     const result = await get(`/api/user/address/${addressId}`)
     if (result?.errno === 0 && result?.data) {
@@ -66,20 +68,17 @@ const useFormEffect = (addressId) => {
       formData.phone = phone
     }
   }
+
   const upsertAddress = async () => {
-    if (addressId) {
-      const result = await patch(`/api/user/address/${addressId}`, {
-        data: formData
-      })
-      if (result?.errno === 0) { router.back() }
-    } else {
-      const result = await post('/api/user/address', {
-        data: formData
-      })
-      if (result?.errno === 0) { router.back() }
-    }
+    const result = addressId
+      ? await patch(`/api/user/address/${addressId}`, { data: formData })
+      : await post('/api/user/address', { data: formData })
+
+    if (result?.errno === 0) router.back()
   }
-  if (addressId) { getAddressItem() }
+
+  if (addressId) getAddressItem()
+
   return { formData, upsertAddress }
 }
 
@@ -88,11 +87,15 @@ export default {
   setup () {
     const router = useRouter()
     const route = useRoute()
-    const addressId = route?.params?.id
-    const { addressList } = useAddressEffect()
-    const { formData, upsertAddress } = useFormEffect(addressId)
+    const addressId = route.params?.id
     const handleBackClick = () => { router.back() }
-    return { addressId, addressList, formData, handleBackClick, upsertAddress }
+
+    return {
+      addressId,
+      handleBackClick,
+      ...useAddressEffect(),
+      ...useFormEffect(addressId)
+    }
   }
 }
 </script>

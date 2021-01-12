@@ -1,61 +1,63 @@
 <template>
   <div class="wrapper">
-    <div class="header">
-      <div class="header__edit-btn iconfont">&#xe670;</div>
-      <div class="header__card">
-        <img src="https://tva1.sinaimg.cn/large/008eGmZEly1gml41hovzaj305z05zwek.jpg" class="header__card__img">
-        <div class="header__card__nickname">
-          {{userInfo.username}}
-          <span class="badge">
-            <span class="star">
-              <span class="iconfont">&#xe60a;</span>
+    <div class="content">
+      <div class="header">
+        <div class="header__edit-btn iconfont">&#xe670;</div>
+        <div class="header__card">
+          <img src="https://tva1.sinaimg.cn/large/008eGmZEly1gml41hovzaj305z05zwek.jpg" class="header__card__img">
+          <div class="header__card__nickname">
+            {{userInfo.username}}
+            <span class="badge">
+              <span class="star">
+                <span class="iconfont">&#xe60a;</span>
+              </span>
+              16
             </span>
-            16
-          </span>
-        </div>
-        <div class="header__card__userid">ID: {{userInfo._id}}</div>
-        <div class="header__card__items">
-          <div class="header__card__item">
-            <span class="header__card__item__name">红包</span>
-            <span class="header__card__item__value">218</span>
           </div>
-          <div class="header__card__item">
-            <span class="header__card__item__name">优惠券</span>
-            <span class="header__card__item__value">12张</span>
-          </div>
-          <div class="header__card__item">
-            <span class="header__card__item__name">鲜豆</span>
-            <span class="header__card__item__value">88</span>
-          </div>
-          <div class="header__card__item">
-            <span class="header__card__item__name">白条</span>
-            <span class="header__card__item__value">1000</span>
+          <div class="header__card__userid">ID: {{userInfo._id}}</div>
+          <div class="header__card__items">
+            <div class="header__card__item">
+              <span class="header__card__item__name">红包</span>
+              <span class="header__card__item__value">218</span>
+            </div>
+            <div class="header__card__item">
+              <span class="header__card__item__name">优惠券</span>
+              <span class="header__card__item__value">12张</span>
+            </div>
+            <div class="header__card__item">
+              <span class="header__card__item__name">鲜豆</span>
+              <span class="header__card__item__value">88</span>
+            </div>
+            <div class="header__card__item">
+              <span class="header__card__item__name">白条</span>
+              <span class="header__card__item__value">1000</span>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="links">
-      <div class="links__item">
-        <span class="iconfont links__item__yen">&#xe6b6;</span>
-        <span class="links__item__text">我的钱包</span>
-        <span class="iconfont links__item__enter">&#xe6a3;</span>
-      </div>
-      <router-link :to="{name: 'MyAddressList'}">
+      <div class="links">
         <div class="links__item">
-          <span class="iconfont links__item__address">&#xe603;</span>
-          <span class="links__item__text">我的地址</span>
+          <span class="iconfont links__item__yen">&#xe6b6;</span>
+          <span class="links__item__text">我的钱包</span>
           <span class="iconfont links__item__enter">&#xe6a3;</span>
         </div>
-      </router-link>
-      <div class="links__item">
-        <span class="iconfont links__item__service">&#xe679;</span>
-        <span class="links__item__text">客服与帮助</span>
-        <span class="iconfont links__item__enter">&#xe6a3;</span>
+        <router-link :to="{name: 'MyAddressList'}">
+          <div class="links__item">
+            <span class="iconfont links__item__address">&#xe603;</span>
+            <span class="links__item__text">我的地址</span>
+            <span class="iconfont links__item__enter">&#xe6a3;</span>
+          </div>
+        </router-link>
+        <div class="links__item">
+          <span class="iconfont links__item__service">&#xe679;</span>
+          <span class="links__item__text">客服与帮助</span>
+          <span class="iconfont links__item__enter">&#xe6a3;</span>
+        </div>
       </div>
+      <div class="logout" @click="handleLogoutClick">退出登录</div>
     </div>
-    <div class="logout" @click="handleLogoutClick">退出登录</div>
-    <Docker/>
   </div>
+  <Docker/>
 </template>
 
 <script>
@@ -108,7 +110,7 @@ export default {
   top: 0;
   bottom: 0;
   background: $bgColor;
-  overflow: hidden;
+  overflow: hidden scroll;
 }
 
 .header {
